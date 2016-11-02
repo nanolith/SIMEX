@@ -156,7 +156,7 @@ using the Linker Utility.
 
 The description of SIMEX Assembly Language can be found in the [SIMEX Assembly
 Language Guide](docs/SIMEX_Assembly_Language_Guide.md).  The description of the
-assembler utility can be found in the [SASM Guide](docs/SASM_Guide.md).
+assembler utility can be found in the [SASM Guide](docs/SASM_GUIDE.md).
 
 Linker
 ------
