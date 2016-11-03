@@ -11,13 +11,6 @@ needs to be written.
 
 ###SIMEX Specification
 
-* Scope
-* Words, Memory, and Endianness
-* Register-Stack
-* Segments
-* Special Registers
-* Functions
-* System Calls
 * Threads
 * Signals and Interrupts
 * Exceptions
