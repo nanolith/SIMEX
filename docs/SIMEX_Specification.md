@@ -147,84 +147,92 @@ Special Registers
 
 SIMEX supports up to 256 special registers, but only the first 32 are defined as
 below.  This list is incomplete.  Many of the registers are the same as is found
-in MMIX, but most of the MMIX special registers are not used in SIMEX.
+in MMIX, but most of the MMIX special registers are not used in SIMEX.  Reserved
+registers will return 0 when read and will ignore writes.  Future features may
+be tested by reading from and writing to these registers as per instructions in
+future revisions of this specification.  However, current code should ignore
+these registers to remain forward compatible with future versions of this
+specification, as writes to reserved registers may result in exceptions in
+future versions.
 
-* 0x00 - RESERVED
-* 0x01 - `rD`, dividend register
-* 0x02 - `rE`, epsilon register
-* 0x03 - `rH`, himult register
-* 0x04 - `rJ`, return-jump register
-* 0x05 - `rJJ`, SYSCALL return-jump register
-* 0x06 - `rM`, multiplex mask register
-* 0x07 - `rR`, remainder register
-* 0x08 - `rP`, prediction register
-* 0x09 - RESERVED
-* 0x0A - RESERVED
-* 0x0B - `rO`, register stack offset
-* 0x0C - `rS`, register stack pointer
-* 0x0D - RESERVED
-* 0x0E - RESERVED
-* 0x0F - RESERVED
-* 0x10 - `rG`, global threshold register
-* 0x11 - `rL`, local threshold register
-* 0x12 - RESERVED
-* 0x13 - RESERVED
-* 0x14 - RESERVED
-* 0x15 - RESERVED
-* 0x16 - RESERVED
-* 0x17 - RESERVED
-* 0x18 - RESERVED
-* 0x19 - `rFF`, fault handler location
-* 0x1A - `rF`, fault location register
-* 0x1B - `rOP`, fault Z register value
-* 0x1C - `rXX`, fault X register value
-* 0x1D - `rYY`, fault Y register value
-* 0x1E - `rZZ`, fault Z register value
-* 0x1F - `rCC`, fault code
+| Register | Shorthand | Description                                   | Note |
+|---------:|:----------|:----------------------------------------------|-----:|
+|     0x00 |           | RESERVED                                      |      |
+|     0x01 | `rD`      | dividend register                             |  1   |
+|     0x02 | `rE`      | epsilon register                              |  2   |
+|     0x03 | `rH`      | himult register                               |  3   |
+|     0x04 | `rJ`      | return-jump register                          |  4   |
+|     0x05 | `rJJ`     | SYSCALL return-jump register                  |  5   |
+|     0x06 | `rM`      | multiplex mask register                       |  6   |
+|     0x07 | `rR`      | remainder register                            |  7   |
+|     0x08 | `rP`      | prediction register                           |  8   |
+|     0x09 |           | RESERVED                                      |      |
+|     0x0A |           | RESERVED                                      |      |
+|     0x0B | `rO`      | register stack offset                         |  9   |
+|     0x0C | `rS`      | register stack pointer                        |  9   |
+|     0x0D |           | RESERVED                                      |      |
+|     0x0E |           | RESERVED                                      |      |
+|     0x0F |           | RESERVED                                      |      |
+|     0x10 | `rG`      | global threshold register                     |  9   |
+|     0x11 | `rL`      | local threshold register                      |  9   |
+|     0x12 |           | RESERVED                                      |      |
+|     0x13 |           | RESERVED                                      |      |
+|     0x14 |           | RESERVED                                      |      |
+|     0x15 |           | RESERVED                                      |      |
+|     0x16 |           | RESERVED                                      |      |
+|     0x17 |           | RESERVED                                      |      |
+|     0x18 |           | RESERVED                                      |      |
+|     0x19 | `rFF`     | fault handler location                        | 10   |
+|     0x1A | `rF`      | fault location register                       | 10   |
+|     0x1B | `rOP`     | fault Z register value                        | 10   |
+|     0x1C | `rXX`     | fault X register value                        | 10   |
+|     0x1D | `rYY`     | fault Y register value                        | 10   |
+|     0x1E | `rZZ`     | fault Z register value                        | 10   |
+|     0x1F | `rCC`     | fault code                                    | 10   |
 
-The dividend register, `rD`, is used with the unsigned division instruction
-`DIVU`.  More details are provided with the description of that instruction.
+1. The dividend register, `rD`, is used with the unsigned division instruction
+   `DIVU`.  More details are provided with the description of that instruction.
 
-The epsilon register, `rE`, is used in conjunction with the floating point
-comparison instructions.  More details are provided with the description of
-those instructions.
+2. The epsilon register, `rE`, is used in conjunction with the floating point
+   comparison instructions.  More details are provided with the description of
+   those instructions.
 
-The himult register, `rH`, is used to store the high half of the 128-bit
-product obtained via the `MULU` instruction.  More details are provided with the
-description of that instruction.
+3. The himult register, `rH`, is used to store the high half of the 128-bit
+   product obtained via the `MULU` instruction.  More details are provided with
+   the description of that instruction.
 
-The return-jump register, `rJ`, is used for function linkage.  More details are
-provided in the section on functions.
+4. The return-jump register, `rJ`, is used for function linkage.  More details
+   are provided in the section on functions.
 
-The `SYSCALL` return-jump register, `rJJ`, is used for syscall linkage.  More
-details are provided in the section on system calls.
+5. The `SYSCALL` return-jump register, `rJJ`, is used for syscall linkage.  More
+   details are provided in the section on system calls.
 
-The multiplex-mask register, `rM`, is used in conjunction with the `MUX`
-instruction.  More details are provided with the description of that
-instruction.
+6. The multiplex-mask register, `rM`, is used in conjunction with the `MUX`
+   instruction.  More details are provided with the description of that
+   instruction.
 
-The remainder register, `rR`, is used in conjunction with the `DIV` and `DIVU`
-instructions.  More details are provided with the description of those
-instructions.
+7. The remainder register, `rR`, is used in conjunction with the `DIV` and
+   `DIVU` instructions.  More details are provided with the description of those
+   instructions.
 
-The prediction register, `rP`, is used in conjunction with the `CSWAP`
-instruction.  More details are provided with the description of that
-instruction.
+8. The prediction register, `rP`, is used in conjunction with the `CSWAP`
+   instruction.  More details are provided with the description of that
+   instruction.
 
-The register stack offset, register stack pointer, global threshold, and local
-threshold registers -- `rO`, `rS`, `rG`, and `rL` respectively -- are used in
-conjunction with the register-stack.  More information can be found in the
-register-stack section.
+9. The register stack offset, register stack pointer, global threshold, and
+   local threshold registers -- `rO`, `rS`, `rG`, and `rL` respectively -- are
+   used in conjunction with the register-stack.  More information can be found
+   in the register-stack section.
 
-When an exception is detected, the fault handler at address `rFF` is called.
-During an exception, the `rF` register contains the location of the instruction
-that caused the fault.  The `rOP`, `rXX`, `rYY`, and `rZZ` registers contain the
-instruction, the value of the `X` register, the value of the `Y` register,
-and the value of the `Z` register, respectively.  The `rOP` register's high
-Tetra is reserved, and the low Tetra contains the instruction that caused
-the fault.  This information can be used to recover from the exception and
-resume execution.  More information about exception handling can be found in the
-section on exceptions.
+10. When an exception is detected, the fault handler at address `rFF` is called.
+   During an exception, the `rF` register contains the location of the
+   instruction that caused the fault.  The `rOP`, `rXX`, `rYY`, and `rZZ`
+   registers contain the instruction, the value of the `X` register, the value
+   of the `Y` register, and the value of the `Z` register, respectively.  The
+   `rOP` register's high Tetra is reserved, and the low Tetra contains the
+   instruction that caused the fault.  This information can be used to recover
+   from the exception and resume execution.  More information about exception
+   handling can be found in the section on exceptions.
 
 Functions
 ---------
@@ -296,3 +304,67 @@ adjusted so that all returned values are visible.
 Since this specification is specific to SIMEX itself, this section does not
 cover the list of supported system calls.  Please see the [SIMEX System Call
 Guide](SIMEX_System_Call_Guide.md) for more information.
+
+Instruction Basics
+------------------
+
+A SIMEX instruction consists of a Tetra with an opcode, an X value, a Y value,
+and a Z value.  The high byte is the opcode.  Stored in Big-Endian format, the
+resulting instruction is laid out as in the table below.
+
+| B3     | B2  | B1  | B0  |
+|:------:|:---:|:---:|:---:|
+| opcode |  X  |  Y  |  Z  |
+
+Since the opcode is a byte, there is a maximum of 256 supported instructions.
+Most instructions have two flavors.  One flavor treats the Z value as a
+register, and a second immediate flavor uses the Z value directly as a constant.
+While the opcodes for these flavors are distinct, the mnemonic used by the
+assembler is the same.  The assembler is smart enough to know if the immediate
+form is used based upon context.
+
+Most instructions treat the X, Y, and Z values independently.  However, some
+instructions combine the YZ values into a 16-bit number, and some, such as the
+`JMP` instructions, combine the XYZ values into a 32-bit number.
+
+Instruction Table
+-----------------
+
+The following table describes all instructions supported by SIMEX.  Most of
+these instructions are compatible with MMIX.  Most of the opcodes are the exact
+same opcodes as found in MMIX.
+
+|      | `0x00` | `0x01` | `0x02` | `0x03` | `0x04` | `0x05` | `0x06` | `0x07` |
+|-----:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+|`0x00`| SYSCALL|  FCMP  |  FUN   |  FEQL  |  FADD  |  FIX   |  FSUB  |  FIXU  |
+|`0x08`|  FLOT  |  FLOTI | FLOTU  | FLOTUI |  SFLOT | SFLOTI | SFLOTU | SFLOTUI|
+|`0x10`|  FMUL  |  FCMPE |  FUNE  |  FEQLE |  FDIV  |  FSQRT |  FREM  |  FINT  |
+|`0x18`|  MUL   |  MULI  |  MULU  |  MULUI |  DIV   |  DIVI  |  DIVU  |  DIVUI |
+|`0x20`|  ADD   |  ADDI  |  ADDU  |  ADDUI |  SUB   |  SUBI  |  SUBU  |  SUBUI |
+|`0x28`|  2ADDU | 2ADDUI |  4ADDU | 4ADDUI |  8ADDU | 8ADDUI | 16ADDU | 16ADDUI|
+|`0x30`|  CMP   |  CMPI  |  CMPU  |  CMPUI |  NEG   |  NEGI  |  NEGU  |  NEGUI |
+|`0x38`|   SL   |  SLI   |  SLU   |  SLUI  |   SR   |  SRI   |  SRU   |  SRUI  |
+|`0x40`|   BN   |  BNB   |   BZ   |  BZB   |   BP   |  BPB   |  BOD   |  BODB  |
+|`0x48`|  BNN   |  BNNB  |  BNZ   |  BNZB  |  BNP   |  BNPB  |  BEV   |  BEVB  |
+|`0x50`|  PBN   |  PBNB  |  PBZ   |  PBZB  |  PBP   |  PBPB  |  PBOD  |  PBODB |
+|`0x58`|  PBNN  |  PBNNB |  PBNZ  |  PBNZB |  PBNP  |  PBNPB |  PBEV  |  PBEVB |
+|`0x60`|  CSN   |  CSNI  |  CSZ   |  CSZI  |  CSP   |  CSPI  |  CSOD  |  CSODI |
+|`0x68`|  CSNN  |  CSNNI |  CSNZ  |  CSNZI |  CSNP  |  CSNPI |  CSEV  |  CSEVI |
+|`0x70`|  ZSN   |  ZSNI  |  ZSZ   |  ZSZI  |  ZSP   |  ZSPI  |  ZSOD  |  ZSODI |
+|`0x78`|  ZSNN  |  ZSNNI |  ZSNZ  |  ZSNZI |  ZSNP  |  ZSNPI |  ZSEV  |  ZSEVI |
+|`0x80`|  LDB   |  LDBI  |  LDBU  |  LDBUI |  LDW   |  LDWI  |  LDWU  |  LDWUI |
+|`0x88`|  LDT   |  LDTI  |  LDTU  |  LDTUI |  LDO   |  LDOI  |  LDOU  |  LDOUI |
+|`0x90`|  LDSF  |  LDSFI |  LDHT  |  LDHTI |  CSWAP | CSWAPI |  LDUNC | LDUNCI |
+|`0x98`|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|   GO   |  GOI   |
+|`0xA0`|  STB   |  STBI  |  STBU  |  STBUI |  STW   |  STWI  |  STWU  |  STWUI |
+|`0xA8`|  STT   |  STTI  |  STTU  |  STTUI |  STO   |  STOI  |  STOU  |  STOUI |
+|`0xB0`|  STSF  |  STSFI |  STHT  |  STHTI |  STCO  |  STCOI |  STUNC | STUNCI |
+|`0xB8`|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED| PUSHGO | PUSHGOI|
+|`0xC0`|   OR   |  ORI   |  ORN   |  ORNI  |  NOR   |  NORI  |  XOR   |  XORI  |
+|`0xC8`|  AND   |  ANDI  |  ANDN  |  ANDNI |  NAND  |  NANDI |  NXOR  |  NXORI |
+|`0xD0`|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|
+|`0xD8`|  MUX   |  MUXI  |RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|
+|`0xE0`|  SETH  |  SETMH |  SETML |  SETL  |  INCH  |RESERVED|RESERVED|RESERVED|
+|`0xE8`|  ORH   |  ORMH  |  ORML  |  ORL   |  ANDNH | ANDNMH | ANDNML |  ANDNL |
+|`0xF0`|  JMP   |  JMPB  |  PUSHJ | PUSHJB |  GETA  |  GETAB |  PUT   |  PUTI  |
+|`0xF8`|  POP   | RESUME |  SAVE  | UNSAVE |  SYNC  |  SWYM  |  GET   |RESERVED|
