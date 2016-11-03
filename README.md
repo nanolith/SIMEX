@@ -81,12 +81,7 @@ often requiring a context switch to the OS and back.
 [fiber-wiki]: https://en.wikipedia.org/wiki/Fiber_(computer_science)
 [ibm-context]: http://www.ibm.com/support/knowledgecenter/SSLTBW_2.1.0/com.ibm.zos.v2r1.bpxbd00/rmctxt.htm
 
-In both cases, threads receive their own register-stack copies.  However, the
-global register-stack is shared.  Reads and writes to/from the global register
-stack are atomic, but there is no guarantee regarding the atomicity of memory
-loads and stores.  Therefore, SIMEX provides compare-and-exchange instructions
-that can be used to implement synchronization primitives or to create lockless
-data structures.
+In both cases, threads receive their own register-stack copies.  SIMEX provides compare-and-exchange instructions that can be used to implement synchronization primitives or to create lockless data structures.
 
 For more information, please see the [SIMEX Multithreading
 Guide](docs/SIMEX_Multithreading_Guide.md).
