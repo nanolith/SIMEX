@@ -364,7 +364,24 @@ same opcodes as found in MMIX.
 |`0xC8`|  AND   |  ANDI  |  ANDN  |  ANDNI |  NAND  |  NANDI |  NXOR  |  NXORI |
 |`0xD0`|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|
 |`0xD8`|  MUX   |  MUXI  |RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|RESERVED|
-|`0xE0`|  SETH  |  SETMH |  SETML |  SETL  |  INCH  |RESERVED|RESERVED|RESERVED|
+|`0xE0`|  SETH  |  SETMH |  SETML |  SETL  |  INCH  |  INCMH |  INCML |  INCL  |
 |`0xE8`|  ORH   |  ORMH  |  ORML  |  ORL   |  ANDNH | ANDNMH | ANDNML |  ANDNL |
 |`0xF0`|  JMP   |  JMPB  |  PUSHJ | PUSHJB |  GETA  |  GETAB |  PUT   |  PUTI  |
 |`0xF8`|  POP   | RESUME |  SAVE  | UNSAVE |  SYNC  |  SWYM  |  GET   |RESERVED|
+
+Note that a few instructions found in MMIX have been removed from SIMEX.  These
+have been reserved.  Some of these have been removed to simplify the
+specification.  Some have been removed due to architectural differences between
+the SIMEX machine and the MMIX machine.  The `TRAP` instruction has been
+replaced by the `SYSCALL` instruction, and the `TRIP` instruction has been
+removed.  The functionality provided by `TRAP` and `TRIP` have been replaced by
+system calls, the exception mechanism, and system calls associated with signals.
+
+Some of the more exotic bit fiddling operations have been removed to simplify
+JIT implementations.  Many of the virtual memory, synchronization, and cache
+manipulation instructions have been removed for portability reasons.  There are
+still uncached write instructions, the `CSWAP/I` instructions, and the `SYNC`
+instruction.  Cache invalidation instructions may be added in the future if JIT
+implementations require these for performance purposes.
+
+The following sections will describe these instructions.
