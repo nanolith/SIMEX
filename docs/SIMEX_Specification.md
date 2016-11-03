@@ -384,4 +384,76 @@ still uncached write instructions, the `CSWAP/I` instructions, and the `SYNC`
 instruction.  Cache invalidation instructions may be added in the future if JIT
 implementations require these for performance purposes.
 
-The following sections will describe these instructions.
+The following sections describe these instructions.
+
+Integer Math Instructions
+-------------------------
+
+There are 22 integer math instructions in SIMEX.
+
+* `ADD $X, $Y, $Z` / `ADD $X, $Y, Z` "add"
+
+  $X = $Y + $Z or $X = $Y + Z.
+
+  This operation is performed using signed, two's complement arithmetic.  If the
+  resulting sum is greater than or equal to 2<sup>63</sup> or less than
+  -2<sup>63</sup>, an integer overflow exception results.
+
+* `ADDU $X, $Y, $Z` / `ADDU $X, $Y, Z` "add unsigned"
+
+  $X = ($Y + $Z) mod 2<sup>64</sup> or $X = ($Y + Z) mod 2<sup>64</sup>.
+
+  This operation is similar to `ADD`, except that no integer overflow exception
+  will result if the result would exceed the bounds of a 64-bit signed integer.
+  Instead, the result, mod 2<sup>64</sup> is stored in $X.
+
+* `2ADDU $X, $Y, $Z` / `2ADDUI $X, $Y, $Z` "times 2 and add unsigned"
+
+  $X = (2$Y + $Z) mod 2<sup>64</sup> or $X = (2$Y + Z) mod 2<sup>64</sup>.
+
+* `4ADDU $X, $Y, $Z` / `4ADDUI $X, $Y, $Z` "times 4 and add unsigned"
+
+  $X = (4$Y + $Z) mod 2<sup>64</sup> or $X = (4$Y + Z) mod 2<sup>64</sup>.
+
+* `8ADDU $X, $Y, $Z` / `8ADDUI $X, $Y, $Z` "times 8 and add unsigned"
+
+  $X = (8$Y + $Z) mod 2<sup>64</sup> or $X = (8$Y + Z) mod 2<sup>64</sup>.
+
+* `16ADDU $X, $Y, $Z` / `16ADDUI $X, $Y, $Z` "times 16 and add unsigned"
+
+  $X = (16$Y + $Z) mod 2<sup>64</sup> or $X = (16$Y + Z) mod 2<sup>64</sup>.
+
+* `SUB $X, $Y, $Z` / `SUB $X, $Y, Z` "subtract"
+
+  $X = $Y - $Z or $X = $Y - Z.
+
+  This operation is performed using signed, two's complement arithmetic.  If the
+  resulting difference is greater than or equal to 2<sup>63</sup> or less than
+  -2<sup>63</sup>, an integer overflow exception results.
+
+* `SUBU $X, $Y, $Z` / `SUBU $X, $Y, Z` "subtract unsigned"
+
+  $X = ($Y - $Z) mod 2<sup>64</sup> or $X = ($Y - Z) mod 2<sup>64</sup>.
+
+  This operation is similar to `SUB`, except that no integer overflow exception
+  will result if the result would exceed the bounds of a 64-bit signed integer.
+  Instead, the result, mod 2<sup>64</sup> is stored in $X.
+
+* `NEG $X, $Y, $Z` / `NEG $X, $Y, Z` "negate"
+
+  $X = Y - $Z or $X = Y - Z.
+
+  This operation is performed using signed, two's complement arithmetic.  If the
+  resulting difference is greater than or equal to 2<sup>63</sup> or less than
+  -2<sup>63</sup>, an integer overflow exception results.  Unlike `SUB`, this
+  operation treats the value Y as a constant.  This can be used to negate the Z
+  value or to create negative constant values.  When Y is 0, overflow occurs
+  only if $Z = -2<sub>63</sub>.
+
+* `NEGU $X, $Y, $Z` / `NEGU $X, $Y, Z` "negate unsigned"
+
+  $X = (Y - $Z) mod 2<sup>64</sup> or $X = (Y - Z) mod 2<sup>64</sup>.
+
+  This operation is similar to `NEG`, except that no integer overflow exception
+  will result if the result would exceed the bounds of a 64-bit signed integer.
+  Instead, the result, mod 2<sup>64</sup> is stored in $X.
