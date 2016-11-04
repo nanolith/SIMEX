@@ -38,11 +38,6 @@ class Instruction
 public:
 
     /**
-     * The constructor takes an opcode, and an XYZ value.
-     */
-    Instruction(Opcode op, std::uint8_t x, std::uint8_t y, std::uint8_t z);
-
-    /**
      * Virtual destructor.
      */
     virtual ~Instruction();
@@ -60,34 +55,60 @@ public:
 
     /**
      * The decode method is a factory method which creates an Instruction.
+     *
+     * \param op    The opcode for this instruction.
+     * \param x     The X value for this instruction.
+     * \param y     The Y value for this instruction.
+     * \param z     The Z value for this instruction.
+     *
+     * \returns the decoded instruction, which can be emitted or evaluated.
      */
     static std::shared_ptr<Instruction>
     decode(Opcode op, std::uint8_t x, std::uint8_t y, std::uint8_t z);
 
     /**
      * The emit method writes an Instruction to the given binary ostream.
+     *
+     * \param out       The ostream to which this instruction is emitted.
      */
     void emit(std::ostream& out) const;
 
     /**
      * Get the opcode for this instruction.
+     *
+     * \returns this instruction's opcode.
      */
     inline Opcode opcode() const { return op_; }
 
     /**
      * Get the X value for this instruction.
+     *
+     * \returns this instruction's X value.
      */
     inline std::uint8_t x() const { return x_; }
 
     /**
      * Get the Y value for this instruction.
+     *
+     * \returns this instruction's Y value.
      */
     inline std::uint8_t y() const { return y_; }
 
     /**
      * Get the Z value for this instruction.
+     *
+     * \returns this instruction's Z value.
      */
     inline std::uint8_t z() const { return z_; }
+
+protected:
+    /**
+     * The constructor takes an opcode, and an XYZ value.
+     */
+    Instruction(Opcode op, std::uint8_t x, std::uint8_t y, std::uint8_t z)
+        : op_{op}, x_{x}, y_{y}, z_{z}
+    {
+    }
 
 private:
     Opcode op_;
