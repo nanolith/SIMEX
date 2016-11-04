@@ -59,6 +59,19 @@ enum class SReg : std::uint8_t
     SR_RCC              =   0x1F,
 };
 
+/**
+ * Convert a special register to a zero-based offset.
+ *
+ * \param sreg      The register to convert.
+ *
+ * \returns the converted offset.
+ */
+inline int sreg2offset(SReg sreg)
+{
+    //explicit conversion to the uint8_t type; implicit conversion to int.
+    return static_cast<std::underlying_type<SReg>::type>(sreg);
+}
+
 /* namespace simex */}
 
 //end of C++ specific section
