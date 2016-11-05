@@ -283,6 +283,19 @@ enum class Opcode : std::uint8_t
     OP_RESERVED_xFF     =   0xFF
 };
 
+/**
+ * Convert an Opcode to a byte.
+ *
+ * \param op        The opcode to convert.
+ *
+ * \returns the converted opcode as a byte.
+ */
+inline uint8_t opcode2byte(Opcode op)
+{
+    //explicit conversion to the uint8_t type.
+    return static_cast<std::underlying_type<Opcode>::type>(op);
+}
+
 /* namespace simex */}
 
 //end of C++ specific section
