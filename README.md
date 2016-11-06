@@ -153,6 +153,8 @@ The description of SIMEX Assembly Language can be found in the [SIMEX Assembly
 Language Guide](docs/SIMEX_Assembly_Language_Guide.md).  The description of the
 assembler utility can be found in the [SASM Guide](docs/SASM_GUIDE.md).
 
+The design of the SIMEX Assembler can be found in the [SASM Design Document](docs/SASM_Design.md).
+
 Linker
 ------
 
