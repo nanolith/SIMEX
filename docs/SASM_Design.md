@@ -128,6 +128,8 @@ For input categories, we have the following:
     PCat::Exp
     PCat::Alpha
     PCat::Underscore
+    PCat::HexX
+    PCat::BinB
     PCat::BNum
     PCat::ONum
     PCat::DNum

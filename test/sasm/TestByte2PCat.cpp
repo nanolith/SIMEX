@@ -117,7 +117,7 @@ TEST(byte2PCat, Exp)
 }
 
 /**
- * G-Z and g-z are converted to Alpha
+ * G-Z and g-w,y-z are converted to Alpha
  */
 TEST(byte2PCat, Alpha)
 {
@@ -233,9 +233,6 @@ TEST(byte2PCat, Alpha)
     //'w' is Alpha
     EXPECT_EQ(PCat::Alpha, byte2PCat(0x77));
     EXPECT_EQ(PCat::Alpha, byte2PCat('w'));
-    //'x' is Alpha
-    EXPECT_EQ(PCat::Alpha, byte2PCat(0x78));
-    EXPECT_EQ(PCat::Alpha, byte2PCat('x'));
     //'y' is Alpha
     EXPECT_EQ(PCat::Alpha, byte2PCat(0x79));
     EXPECT_EQ(PCat::Alpha, byte2PCat('y'));
@@ -252,6 +249,26 @@ TEST(byte2PCat, Underscore)
     //'_' is Underscore
     EXPECT_EQ(PCat::Underscore, byte2PCat(0x5f));
     EXPECT_EQ(PCat::Underscore, byte2PCat('_'));
+}
+
+/**
+ * 'b' is converted to BinB
+ */
+TEST(byte2PCat, BinB)
+{
+    //'b' is BinB
+    EXPECT_EQ(PCat::BinB, byte2PCat(0x62));
+    EXPECT_EQ(PCat::BinB, byte2PCat('b'));
+}
+
+/**
+ * 'x' is converted to HexX
+ */
+TEST(byte2PCat, HexX)
+{
+    //'x' is HexX
+    EXPECT_EQ(PCat::HexX, byte2PCat(0x78));
+    EXPECT_EQ(PCat::HexX, byte2PCat('x'));
 }
 
 /**
@@ -306,7 +323,7 @@ TEST(byte2PCat, DNum)
 }
 
 /**
- * A-D,F and a-d,f are converted to HNum.
+ * A,B,C,D,F and a,c,d,f are converted to HNum.
  */
 TEST(byte2PCat, HNum)
 {
@@ -329,9 +346,6 @@ TEST(byte2PCat, HNum)
     //'a' is HNum
     EXPECT_EQ(PCat::HNum, byte2PCat(0x61));
     EXPECT_EQ(PCat::HNum, byte2PCat('a'));
-    //'b' is HNum
-    EXPECT_EQ(PCat::HNum, byte2PCat(0x62));
-    EXPECT_EQ(PCat::HNum, byte2PCat('b'));
     //'c' is HNum
     EXPECT_EQ(PCat::HNum, byte2PCat(0x63));
     EXPECT_EQ(PCat::HNum, byte2PCat('c'));
