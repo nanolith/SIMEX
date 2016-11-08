@@ -165,4 +165,8 @@ sequence differently if needed by context.
 
 Because the preprocessor must also track lines, it runs input through two
 state machines.  The first simply checks for white space or line ends and its
-actions update the physical line number.  The second performs the actions above.
+actions update the physical line number.  For simplicity sake, this state
+machine also filters comments.  Comments and whitespace are reduced to a minimal
+amount, which makes subsequent lexing and parsing easier.  The second state
+machine performs lexical analysis on the input filtered by the first state
+machine.
