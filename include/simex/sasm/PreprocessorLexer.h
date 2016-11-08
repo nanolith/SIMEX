@@ -14,6 +14,8 @@
 # define SIMEX_SASM_PREPROCESSOR_LEXER_HEADER_GUARD
 
 #include <cstdint>
+#include <iosfwd>
+#include <memory>
 #include <type_traits>
 
 //this header is C++ specific
@@ -78,18 +80,21 @@ enum class PCat
     Hash,
     //a byte with the high bit set
     HighBit,
+    //EOF
+    EndOfFile,
     //all other bytes
     Unknown
 };
 
 /**
- * Convert a byte to a preprocesser input category.  This is a lossy conversion.
+ * Convert a character to a preprocesser input category.
+ * This is a lossy conversion.
  *
- * \param by        The byte to convert.
+ * \param ch        The character to convert.
  *
- * \returns the preprocessor input category for this byte.
+ * \returns the preprocessor input category for this character.
  */
-PCat byte2PCat(std::uint8_t by);
+PCat character2PCat(int by);
 
 /**
  * Convert a preprocessor input category to an index.
@@ -103,6 +108,66 @@ inline int pcat2index(PCat cat)
     //explicit conversion to int
     return static_cast<std::underlying_type<PCat>::type>(cat);
 }
+
+/**
+ * The LineFilter interface tracks the current line number.
+ */
+class LineFilter
+{
+public:
+
+    /**
+     * Virtual destructor.
+     */
+    virtual ~LineFilter();
+
+    /**
+     * Get the current line number.
+     */
+    virtual int lineNumber() = 0;
+};
+
+/**
+ * Forward declaration to the private WhitespaceFilterImplementation.
+ */
+struct WhitespaceFilterImplementation;
+
+/**
+ * The WhitespaceFilter class reduces whitespace and comments down to a single
+ * whitespace character, and keeps a physical line count.
+ */
+class WhitespaceFilter : virtual public LineFilter
+{
+public:
+
+    /**
+     * A WhitespaceFilter is created from an input stream.
+     *
+     * \param istream       The input stream used for this filter.
+     */
+    WhitespaceFilter(std::istream& in);
+
+    /**
+     * Destructor.  Clean up this instance.
+     */
+    virtual ~WhitespaceFilter();
+
+    /**
+     * The get method works like istream::get(), except that white space
+     * characters and comments are condensed to a single space.
+     *
+     * \returns a filtered input byte, or EOF on EOF.
+     */
+    int get();
+
+    /**
+     * Returns the current physical line number for this input stream.
+     */
+    virtual int lineNumber();
+
+private:
+    std::unique_ptr<WhitespaceFilterImplementation> impl_;
+};
 
 /* namespace sasm */ } /* namespace simex */ }
 

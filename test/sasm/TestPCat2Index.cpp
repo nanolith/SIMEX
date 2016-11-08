@@ -45,5 +45,6 @@ TEST(pcat2index, basicTest)
     EXPECT_EQ(21, pcat2index(PCat::Comma));
     EXPECT_EQ(22, pcat2index(PCat::Hash));
     EXPECT_EQ(23, pcat2index(PCat::HighBit));
-    EXPECT_EQ(24, pcat2index(PCat::Unknown));
+    EXPECT_EQ(24, pcat2index(PCat::EndOfFile));
+    EXPECT_EQ(25, pcat2index(PCat::Unknown));
 }

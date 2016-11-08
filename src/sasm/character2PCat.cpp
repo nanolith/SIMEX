@@ -1,7 +1,7 @@
 /**
- * \file sasm/byte2PCat.cpp
+ * \file sasm/character2PCat.cpp
  *
- * byte2PCat implementation.
+ * character2PCat implementation.
  *
  * Copyright (C) 2016 Justin Handville - All Rights Reserved.
  *
@@ -146,13 +146,17 @@ static PCat pcatTranslationArray[256] = {
     PCat::HighBit,     PCat::HighBit,     PCat::HighBit,     PCat::HighBit };
 
 /**
- * Convert a byte to a preprocesser input category.  This is a lossy conversion.
+ * Convert a character to a preprocesser input category.
+ * This is a lossy conversion.
  *
- * \param by        The byte to convert.
+ * \param ch        The character to convert.
  *
- * \returns the preprocessor input category for this byte.
+ * \returns the preprocessor input category for this character.
  */
-PCat simex::sasm::byte2PCat(uint8_t by)
+PCat simex::sasm::character2PCat(int ch)
 {
-    return pcatTranslationArray[by];
+    if (ch < 0 || ch > 255)
+        return PCat::EndOfFile;
+
+    return pcatTranslationArray[(uint8_t)ch];
 }
