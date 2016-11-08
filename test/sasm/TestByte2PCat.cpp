@@ -40,6 +40,10 @@ TEST(byte2PCat, Whitespace)
     //Carriage return is a whitespace character
     EXPECT_EQ(PCat::Whitespace, byte2PCat(0x0D));
     EXPECT_EQ(PCat::Whitespace, byte2PCat('\r'));
+
+    //Space is a whitespace character
+    EXPECT_EQ(PCat::Whitespace, byte2PCat(0x20));
+    EXPECT_EQ(PCat::Whitespace, byte2PCat(' '));
 }
 
 /**
