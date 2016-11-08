@@ -432,6 +432,15 @@ TEST(character2PCat, Hash)
 }
 
 /**
+ * EOF is converted to EndOfFile
+ */
+TEST(character2PCat, EndOfFile)
+{
+    //EOF is EndOfFile
+    EXPECT_EQ(PCat::EndOfFile, character2PCat(EOF));
+}
+
+/**
  * Any character with the high-bit set is converted to HighBit.
  */
 TEST(character2PCat, HighBit)
