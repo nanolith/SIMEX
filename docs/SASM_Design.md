@@ -142,6 +142,7 @@ For input categories, we have the following:
     PCat::Comma
     PCat::Hash
     PCat::HighBit
+    PCat::EndOfFile
     PCat::Unknown
 
 To transform this regular language markup into a lexical analyzer, we build a
