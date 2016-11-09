@@ -74,6 +74,12 @@ enum class PCat
     OParen,
     //)
     CParen,
+    //<
+    Lt,
+    //=
+    Eq,
+    //>
+    Gt,
     //,
     Comma,
     //#

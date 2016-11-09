@@ -46,8 +46,8 @@ static PCat pcatTranslationArray[256] = {
     PCat::ONum,        PCat::ONum,        PCat::ONum,        PCat::ONum,
     //0x38 '8'         0x39 '9'           0x3a               0x3b
     PCat::DNum,        PCat::DNum,        PCat::Unknown,     PCat::Unknown,
-    //0x3c             0x3d               0x3e               0x3f
-    PCat::Unknown,     PCat::Unknown,     PCat::Unknown,     PCat::Unknown,
+    //0x3c '<'         0x3d '='           0x3e '>'           0x3f
+    PCat::Lt,          PCat::Eq,          PCat::Gt,          PCat::Unknown,
     //0x40             0x41 'A'           0x42 'B'           0x43 'C'
     PCat::Unknown,     PCat::HNum,        PCat::HNum,        PCat::HNum,
     //0x44 'D'         0x45 'E'           0x46 'F'           0x47 'G'

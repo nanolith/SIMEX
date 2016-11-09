@@ -756,6 +756,60 @@ TEST(WhitespaceFilter, CParenInit)
 }
 
 /**
+ * Test that a Lt is emitted from Init.
+ */
+TEST(WhitespaceFilter, LtInit)
+{
+    stringstream in("<");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a Lt
+    EXPECT_EQ('<', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Eq is emitted from Init.
+ */
+TEST(WhitespaceFilter, EqInit)
+{
+    stringstream in("=");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read an Eq
+    EXPECT_EQ('=', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is emitted from Init.
+ */
+TEST(WhitespaceFilter, GtInit)
+{
+    stringstream in(">");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a Gt
+    EXPECT_EQ('>', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a Comma is emitted from Init.
  */
 TEST(WhitespaceFilter, CommaInit)
@@ -1216,6 +1270,66 @@ TEST(WhitespaceFilter, CParenInSpace)
     EXPECT_EQ(' ', filt->get());
     //read a CParen
     EXPECT_EQ(')', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Lt is emitted from InSpace.
+ */
+TEST(WhitespaceFilter, LtInSpace)
+{
+    stringstream in(" <");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read a Lt
+    EXPECT_EQ('<', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Eq is emitted from InSpace.
+ */
+TEST(WhitespaceFilter, EqInSpace)
+{
+    stringstream in(" =");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read an Eq
+    EXPECT_EQ('=', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is emitted from InSpace.
+ */
+TEST(WhitespaceFilter, GtInSpace)
+{
+    stringstream in(" >");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read a Gt
+    EXPECT_EQ('>', filt->get());
     //read a newline
     EXPECT_EQ('\n', filt->get());
     //read the EOF
@@ -1697,6 +1811,66 @@ TEST(WhitespaceFilter, CParenMaybeComment)
 }
 
 /**
+ * Test that a Lt is emitted from MaybeComment.
+ */
+TEST(WhitespaceFilter, LtMaybeComment)
+{
+    stringstream in("/<");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    //read a Lt
+    EXPECT_EQ('<', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Eq is emitted from MaybeComment.
+ */
+TEST(WhitespaceFilter, EqMaybeComment)
+{
+    stringstream in("/=");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    //read an Eq
+    EXPECT_EQ('=', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is emitted from MaybeComment.
+ */
+TEST(WhitespaceFilter, GtMaybeComment)
+{
+    stringstream in("/>");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    //read a Gt
+    EXPECT_EQ('>', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a Comma is emitted from MaybeComment.
  */
 TEST(WhitespaceFilter, CommaMaybeComment)
@@ -2135,6 +2309,54 @@ TEST(WhitespaceFilter, CParenLineComment)
 }
 
 /**
+ * Test that a Lt is omitted from a LineComment.
+ */
+TEST(WhitespaceFilter, LtLineComment)
+{
+    stringstream in("//<");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Eq is omitted from a LineComment.
+ */
+TEST(WhitespaceFilter, EqLineComment)
+{
+    stringstream in("//=");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is omitted from a LineComment.
+ */
+TEST(WhitespaceFilter, GtLineComment)
+{
+    stringstream in("//>");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a Comma is omitted from a LineComment.
  */
 TEST(WhitespaceFilter, CommaLineComment)
@@ -2540,6 +2762,54 @@ TEST(WhitespaceFilter, OParenBlockComment)
 TEST(WhitespaceFilter, CParenBlockComment)
 {
     stringstream in("/*)*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Lt is omitted from a BlockComment.
+ */
+TEST(WhitespaceFilter, LtBlockComment)
+{
+    stringstream in("/*<*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Eq is omitted from a BlockComment.
+ */
+TEST(WhitespaceFilter, EqBlockComment)
+{
+    stringstream in("/*=*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is omitted from a BlockComment.
+ */
+TEST(WhitespaceFilter, GtBlockComment)
+{
+    stringstream in("/*>*/");
 
     //create the whitespace filter
     auto filt = make_shared<WhitespaceFilter>(in);
@@ -2964,6 +3234,54 @@ TEST(WhitespaceFilter, OParenMaybeEndBlockComment)
 TEST(WhitespaceFilter, CParenMaybeEndBlockComment)
 {
     stringstream in("/**)*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Lt is omitted from a MaybeEndBlockComment.
+ */
+TEST(WhitespaceFilter, LtMaybeEndBlockComment)
+{
+    stringstream in("/**<*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Eq is omitted from a MaybeEndBlockComment.
+ */
+TEST(WhitespaceFilter, EqMaybeEndBlockComment)
+{
+    stringstream in("/**=*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is omitted from a MaybeEndBlockComment.
+ */
+TEST(WhitespaceFilter, GtMaybeEndBlockComment)
+{
+    stringstream in("/**>*/");
 
     //create the whitespace filter
     auto filt = make_shared<WhitespaceFilter>(in);

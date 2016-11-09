@@ -412,6 +412,36 @@ TEST(character2PCat, CParen)
 }
 
 /**
+ * '<' is converted to Lt
+ */
+TEST(character2PCat, Lt)
+{
+    //'<' is Lt
+    EXPECT_EQ(PCat::Lt, character2PCat(0x3C));
+    EXPECT_EQ(PCat::Lt, character2PCat('<'));
+}
+
+/**
+ * '=' is converted to Eq
+ */
+TEST(character2PCat, Eq)
+{
+    //'>' is Eq
+    EXPECT_EQ(PCat::Eq, character2PCat(0x3D));
+    EXPECT_EQ(PCat::Eq, character2PCat('='));
+}
+
+/**
+ * '>' is converted to Gt
+ */
+TEST(character2PCat, Gt)
+{
+    //'>' is Gt
+    EXPECT_EQ(PCat::Gt, character2PCat(0x3E));
+    EXPECT_EQ(PCat::Gt, character2PCat('>'));
+}
+
+/**
  * ',' is converted to Comma
  */
 TEST(character2PCat, Comma)

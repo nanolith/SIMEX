@@ -35,7 +35,7 @@ static bool passSlashToInSpace(WhitespaceFilterImplementation*, int*);
 /**
  * Filter state machine.
  */
-filter_method_t filterMachine[7][26] = {
+filter_method_t filterMachine[7][29] = {
     //Init State
     {
       //Whitespace --> InSpace
@@ -79,6 +79,12 @@ filter_method_t filterMachine[7][26] = {
       //OParen --> Init (pass character)
       &passCharacter,
       //CParen --> Init (pass character)
+      &passCharacter,
+      //Lt -- Init (pass character)
+      &passCharacter,
+      //Eq -- Init (pass character)
+      &passCharacter,
+      //Gt -- Init (pass character)
       &passCharacter,
       //Comma --> Init (pass character)
       &passCharacter,
@@ -135,6 +141,12 @@ filter_method_t filterMachine[7][26] = {
       &passSpaceToInit,
       //CParen --> Init (pass space; cache current character)
       &passSpaceToInit,
+      //Lt -- Init (pass space; cache current character)
+      &passSpaceToInit,
+      //Eq -- Init (pass space; cache current character)
+      &passSpaceToInit,
+      //Gt -- Init (pass space; cache current character)
+      &passSpaceToInit,
       //Comma --> Init (pass space; cache current character)
       &passSpaceToInit,
       //Hash --> Init (pass space; cache current character)
@@ -189,6 +201,12 @@ filter_method_t filterMachine[7][26] = {
       //OParen --> Init (pass slash; cache character)
       &passSlashToInit,
       //CParen --> Init (pass slash; cache character)
+      &passSlashToInit,
+      //Lt -- Init (pass slash; cache character)
+      &passSlashToInit,
+      //Eq -- Init (pass slash; cache character)
+      &passSlashToInit,
+      //Gt -- Init (pass slash; cache character)
       &passSlashToInit,
       //Comma --> Init (pass slash; cache character)
       &passSlashToInit,
@@ -245,6 +263,12 @@ filter_method_t filterMachine[7][26] = {
       &dropCharacter,
       //CParen --> LineComment (drop character)
       &dropCharacter,
+      //Lt -- LineComment (drop character)
+      &dropCharacter,
+      //Eq -- LineComment (drop character)
+      &dropCharacter,
+      //Gt -- LineComment (drop character)
+      &dropCharacter,
       //Comma --> LineComment (drop character)
       &dropCharacter,
       //Hash --> LineComment (drop character)
@@ -299,6 +323,12 @@ filter_method_t filterMachine[7][26] = {
       //OParen --> BlockComment (drop character)
       &dropCharacter,
       //CParen --> BlockComment (drop character)
+      &dropCharacter,
+      //Lt -- BlockComment (drop character)
+      &dropCharacter,
+      //Eq -- BlockComment (drop character)
+      &dropCharacter,
+      //Gt -- BlockComment (drop character)
       &dropCharacter,
       //Comma --> BlockComment (drop character)
       &dropCharacter,
@@ -355,6 +385,12 @@ filter_method_t filterMachine[7][26] = {
       &actionBlockComment,
       //CParen --> BlockComment (drop character)
       &actionBlockComment,
+      //Lt -- BlockComment (drop character)
+      &actionBlockComment,
+      //Eq -- BlockComment (drop character)
+      &actionBlockComment,
+      //Gt -- BlockComment (drop character)
+      &actionBlockComment,
       //Comma --> BlockComment (drop character)
       &actionBlockComment,
       //Hash --> BlockComment (drop character)
@@ -409,6 +445,12 @@ filter_method_t filterMachine[7][26] = {
       //OParen --> EndOfFile (EOF)
       &passCharacter,
       //CParen --> EndOfFile (EOF)
+      &passCharacter,
+      //Lt -- EndOfFile (EOF)
+      &passCharacter,
+      //Eq -- EndOfFile (EOF)
+      &passCharacter,
+      //Gt -- EndOfFile (EOF)
       &passCharacter,
       //Comma --> EndOfFile (EOF)
       &passCharacter,

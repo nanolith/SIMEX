@@ -139,6 +139,9 @@ For input categories, we have the following:
     PCat::Minus
     PCat::OParen
     PCat::CParen
+    PCat::Lt
+    PCat::Eq
+    PCat::Gt
     PCat::Comma
     PCat::Hash
     PCat::HighBit
@@ -171,3 +174,6 @@ machine also filters comments.  Comments and whitespace are reduced to a minimal
 amount, which makes subsequent lexing and parsing easier.  The second state
 machine performs lexical analysis on the input filtered by the first state
 machine.
+
+The preprocessor lexer tokenizes input, which simplifies the preprocessor
+parser.  The list of tokens supported by the preprocessor lexer are below.

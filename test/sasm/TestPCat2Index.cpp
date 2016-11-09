@@ -42,9 +42,12 @@ TEST(pcat2index, basicTest)
     EXPECT_EQ(18, pcat2index(PCat::Minus));
     EXPECT_EQ(19, pcat2index(PCat::OParen));
     EXPECT_EQ(20, pcat2index(PCat::CParen));
-    EXPECT_EQ(21, pcat2index(PCat::Comma));
-    EXPECT_EQ(22, pcat2index(PCat::Hash));
-    EXPECT_EQ(23, pcat2index(PCat::HighBit));
-    EXPECT_EQ(24, pcat2index(PCat::EndOfFile));
-    EXPECT_EQ(25, pcat2index(PCat::Unknown));
+    EXPECT_EQ(21, pcat2index(PCat::Lt));
+    EXPECT_EQ(22, pcat2index(PCat::Eq));
+    EXPECT_EQ(23, pcat2index(PCat::Gt));
+    EXPECT_EQ(24, pcat2index(PCat::Comma));
+    EXPECT_EQ(25, pcat2index(PCat::Hash));
+    EXPECT_EQ(26, pcat2index(PCat::HighBit));
+    EXPECT_EQ(27, pcat2index(PCat::EndOfFile));
+    EXPECT_EQ(28, pcat2index(PCat::Unknown));
 }
