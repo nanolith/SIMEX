@@ -155,6 +155,8 @@ assembler utility can be found in the [SASM Guide](docs/SASM_GUIDE.md).
 
 The design of the SIMEX Assembler can be found in the [SASM Design Document](docs/SASM_Design.md).
 
+[elf-file-format]: https://en.wikipedia.org/wiki/Executable_and_Linkable_Format
+
 Linker
 ------
 
