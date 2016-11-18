@@ -177,3 +177,36 @@ machine.
 
 The preprocessor lexer tokenizes input, which simplifies the preprocessor
 parser.  The list of tokens supported by the preprocessor lexer are below.
+
+    PTok::Newline
+    PTok::String
+    PTok::SystemString
+    PTok::Include
+    PTok::IfDef
+    PTok::If
+    PTok::ElIf
+    PTok::Else
+    PTok::Pragma
+    PTok::Warning
+    PTok::Error
+    PTok::And
+    PTok::Or
+    PTok::Not
+    PTok::OParen
+    PTok::CParen
+    PTok::Comma
+    PTok::Identifier
+    PTok::Integer
+    PTok::Number
+    PTok::Concat
+    PTok::Stringify
+    PTok::Unknown
+
+The preprocessor uses newlines to delimit preprocessor directives.  The
+preprocessor lexer reduces a hash token followed by an identifier into either
+one of the built-in directives, such as `#include` or `#if`, or into a
+stringification operation on a given identifier.  The `||` and `&&` operators
+are reduced to `PTok::Or` and `PTok::And` respectively.  Open and close
+parentheses are treated specially, as these can be used to group expressions.
+Integers and decimal numbers are tokenized specially so these can be used in
+pragma definitions and for future constant folding.

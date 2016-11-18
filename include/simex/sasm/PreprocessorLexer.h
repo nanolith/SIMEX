@@ -120,6 +120,75 @@ inline int pcat2index(PCat cat)
 }
 
 /**
+ * Preprocessor Token.
+ *
+ * The preprocessor lexer creates tokens with the given enumerated values.
+ * These tokens are then parsed by the preprocessor parser.
+ */
+enum class PTok
+{
+    //Newline
+    Newline                         = 0,
+    //String with all valid escapes
+    String,
+    //System string (used for system includes)
+    SystemString,
+    //#include preprocessing directive
+    Include,
+    //#ifdef preprocessing directive
+    IfDef,
+    //#if preprocessing directive
+    If,
+    //#elif preprocessing directive
+    ElIf,
+    //#else preprocessing directive
+    Else,
+    //#pragma preprocessing directive
+    Pragma,
+    //#warning preprocessing directive
+    Warning,
+    //#error preprocessing directive
+    Error,
+    //&&
+    And,
+    //||
+    Or,
+    //!
+    Not,
+    //(
+    OParen,
+    //)
+    CParen,
+    //,
+    Comma,
+    //a valid identifier
+    Identifier,
+    //a valid integer
+    Integer,
+    //a valid number
+    Number,
+    //##
+    Concat,
+    //#identifier -- also acts as intermediate for reducing directives above.
+    Stringify,
+    //All other input.  Typically passed to the downstream lexer as-is.
+    Unknown
+};
+
+/**
+ * Convert a preprocessor token into an index.
+ *
+ * \param tok       The preprocessor token to convert.
+ *
+ * \returns a 0-based index representing the preprocessor token.
+ */
+inline int ptok2index(PTok tok)
+{
+    //explicit conversion to int
+    return static_cast<std::underlying_type<PTok>::type>(tok);
+}
+
+/**
  * The LineFilter interface tracks the current line number.
  */
 class LineFilter
