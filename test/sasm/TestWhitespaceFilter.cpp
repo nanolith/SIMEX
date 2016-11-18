@@ -414,6 +414,72 @@ TEST(WhitespaceFilter, lineCommentSpacesElided)
 }
 
 /**
+ * Test that a backslash before a newline causes the newline to be elided.
+ */
+TEST(WhitespaceFilter, escapedNewline)
+{
+    stringstream in("a\\\nb");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the a
+    EXPECT_EQ('a', filt->get());
+    //read a whitespace
+    EXPECT_EQ(' ', filt->get());
+    //read the b
+    EXPECT_EQ('b', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a backslash before a line comment is emitted.
+ */
+TEST(WhitespaceFilter, backslashLineComment)
+{
+    stringstream in("\\//foo\nb");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the b
+    EXPECT_EQ('b', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a backslash before a block comment is emitted.
+ */
+TEST(WhitespaceFilter, backslashBlockComment)
+{
+    stringstream in("\\/*foo*/b");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read the b
+    EXPECT_EQ('b', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a line end can be read from Init.
  */
 TEST(WhitespaceFilter, LineEndInit)
@@ -839,6 +905,42 @@ TEST(WhitespaceFilter, HashInit)
 
     //read a Hash
     EXPECT_EQ('#', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Ampersand is emitted from Init.
+ */
+TEST(WhitespaceFilter, AmpersandInit)
+{
+    stringstream in("&");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read an Ampersand
+    EXPECT_EQ('&', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is emitted from Init.
+ */
+TEST(WhitespaceFilter, PipeInit)
+{
+    stringstream in("|");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a Pipe
+    EXPECT_EQ('|', filt->get());
     //read a newline
     EXPECT_EQ('\n', filt->get());
     //read the EOF
@@ -1370,6 +1472,46 @@ TEST(WhitespaceFilter, HashInSpace)
     EXPECT_EQ(' ', filt->get());
     //read a Hash
     EXPECT_EQ('#', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Ampersand is emitted from InSpace.
+ */
+TEST(WhitespaceFilter, AmpersandInSpace)
+{
+    stringstream in(" &");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read an Ampersand
+    EXPECT_EQ('&', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is emitted from InSpace.
+ */
+TEST(WhitespaceFilter, PipeInSpace)
+{
+    stringstream in(" |");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read a Pipe
+    EXPECT_EQ('|', filt->get());
     //read a newline
     EXPECT_EQ('\n', filt->get());
     //read the EOF
@@ -1911,6 +2053,46 @@ TEST(WhitespaceFilter, HashMaybeComment)
 }
 
 /**
+ * Test that an Ampersand is emitted from MaybeComment.
+ */
+TEST(WhitespaceFilter, AmpersandMaybeComment)
+{
+    stringstream in("/&");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    //read an Ampersand
+    EXPECT_EQ('&', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is emitted from MaybeComment.
+ */
+TEST(WhitespaceFilter, PipeMaybeComment)
+{
+    stringstream in("/|");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    //read a Pipe
+    EXPECT_EQ('|', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a HighBit is emitted from MaybeComment.
  */
 TEST(WhitespaceFilter, HighBitMaybeComment)
@@ -2389,6 +2571,38 @@ TEST(WhitespaceFilter, HashLineComment)
 }
 
 /**
+ * Test that an Ampersand is omitted from a LineComment.
+ */
+TEST(WhitespaceFilter, AmpersandLineComment)
+{
+    stringstream in("//&");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is omitted from a LineComment.
+ */
+TEST(WhitespaceFilter, PipeLineComment)
+{
+    stringstream in("//|");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a HighBit is omitted from a LineComment.
  */
 TEST(WhitespaceFilter, HighBitLineComment)
@@ -2842,6 +3056,38 @@ TEST(WhitespaceFilter, CommaBlockComment)
 TEST(WhitespaceFilter, HashBlockComment)
 {
     stringstream in("/*#*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Ampersand is omitted from a BlockComment.
+ */
+TEST(WhitespaceFilter, AmpersandBlockComment)
+{
+    stringstream in("/*&*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is omitted from a BlockComment.
+ */
+TEST(WhitespaceFilter, PipeBlockComment)
+{
+    stringstream in("/*|*/");
 
     //create the whitespace filter
     auto filt = make_shared<WhitespaceFilter>(in);
@@ -3325,6 +3571,38 @@ TEST(WhitespaceFilter, HashMaybeEndBlockComment)
 }
 
 /**
+ * Test that an Ampersand is omitted from a MaybeEndBlockComment.
+ */
+TEST(WhitespaceFilter, AmpersandMaybeEndBlockComment)
+{
+    stringstream in("/**&*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is omitted from a MaybeEndBlockComment.
+ */
+TEST(WhitespaceFilter, PipeMaybeEndBlockComment)
+{
+    stringstream in("/**|*/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
  * Test that a HighBit is omitted from a MaybeEndBlockComment.
  */
 TEST(WhitespaceFilter, HighBitMaybeEndBlockComment)
@@ -3366,6 +3644,620 @@ TEST(WhitespaceFilter, UnknownMaybeEndBlockComment)
     //create the whitespace filter
     auto filt = make_shared<WhitespaceFilter>(in);
 
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that whitespace after a backslash causes the backslash to be emitted.
+ */
+TEST(WhitespaceFilter, WhitespaceMaybeEscapeNewline)
+{
+    stringstream in("\\    ");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a backslash and newline is translated to a space in
+ * MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, LineEndMaybeEscapeNewline)
+{
+    stringstream in("\\\n    ");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a backslash and forward slash are both emitted in
+ * MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, FSlashMaybeEscapeNewline)
+{
+    stringstream in("\\/");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a forward slash
+    EXPECT_EQ('/', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that two backslashes are emitted in MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, BackslashMaybeEscapeNewline)
+{
+    stringstream in("\\\\");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a star is emitted in MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, StarMaybeEscapeNewline)
+{
+    stringstream in("\\*");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a star
+    EXPECT_EQ('*', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a bang is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, BangMaybeEscapeNewline)
+{
+    stringstream in("\\!");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a bang
+    EXPECT_EQ('!', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a double quote is emitted from MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, DoubleQuoteMaybeEscapeNewline)
+{
+    stringstream in("\\\"");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a double quote
+    EXPECT_EQ('\"', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an exp is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, ExpMaybeEscapeNewline)
+{
+    stringstream in("\\e");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read an exp
+    EXPECT_EQ('e', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an alpha is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, AlphaMaybeEscapeNewline)
+{
+    stringstream in("\\g");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read an alpha
+    EXPECT_EQ('g', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an underscore is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, UnderscoreMaybeEscapeNewline)
+{
+    stringstream in("\\_");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read an underscore
+    EXPECT_EQ('_', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a HexX is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, HexXMaybeEscapeNewline)
+{
+    stringstream in("\\x");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a HexX
+    EXPECT_EQ('x', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a BinB is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, BinBMaybeEscapeNewline)
+{
+    stringstream in("\\b");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a BinB
+    EXPECT_EQ('b', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a BNum is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, BNumMaybeEscapeNewline)
+{
+    stringstream in("\\1");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a BNum
+    EXPECT_EQ('1', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an ONum is omitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, ONumMaybeEscapeNewline)
+{
+    stringstream in("\\7");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read an ONum
+    EXPECT_EQ('7', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a DNum is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, DNumMaybeEscapeNewline)
+{
+    stringstream in("\\9");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a DNum
+    EXPECT_EQ('9', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an HNum is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, HNumMaybeEscapeNewline)
+{
+    stringstream in("\\C");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read an HNum
+    EXPECT_EQ('C', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Dot is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, DotMaybeEscapeNewline)
+{
+    stringstream in("\\.");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a Dot
+    EXPECT_EQ('.', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Plus is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, PlusMaybeEscapeNewline)
+{
+    stringstream in("\\+");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Plus
+    EXPECT_EQ('+', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Minus is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, MinusMaybeEscapeNewline)
+{
+    stringstream in("\\-");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Minus
+    EXPECT_EQ('-', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an OParen is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, OParenMaybeEscapeNewline)
+{
+    stringstream in("\\(");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read OParen
+    EXPECT_EQ('(', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a CParen is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, CParenMaybeEscapeNewline)
+{
+    stringstream in("\\)");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read CParen
+    EXPECT_EQ(')', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Lt is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, LtMaybeEscapeNewline)
+{
+    stringstream in("\\<");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Lt
+    EXPECT_EQ('<', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Eq is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, EqMaybeEscapeNewline)
+{
+    stringstream in("\\=");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Eq
+    EXPECT_EQ('=', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Gt is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, GtMaybeEscapeNewline)
+{
+    stringstream in("\\>");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Gt
+    EXPECT_EQ('>', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Comma is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, CommaMaybeEscapeNewline)
+{
+    stringstream in("\\,");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read comma
+    EXPECT_EQ(',', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Hash is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, HashMaybeEscapeNewline)
+{
+    stringstream in("\\#");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Hash
+    EXPECT_EQ('#', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Ampersand is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, AmpersandMaybeEscapeNewline)
+{
+    stringstream in("\\&");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Ampersand
+    EXPECT_EQ('&', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a Pipe is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, PipeMaybeEscapeNewline)
+{
+    stringstream in("\\|");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Pipe
+    EXPECT_EQ('|', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that a HighBit is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, HighBitMaybeEscapeNewline)
+{
+    stringstream in("\\\x82");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read HighBit
+    EXPECT_EQ((int)((uint8_t)'\x82'), filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an EOF is emitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, EOFMaybeEscapeNewline)
+{
+    stringstream in("\\");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that an Unknown is omitted from a MaybeEscapeNewline.
+ */
+TEST(WhitespaceFilter, UnknownMaybeEscapeNewline)
+{
+    stringstream in("\\]");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read backslash
+    EXPECT_EQ('\\', filt->get());
+    //read Unknown
+    EXPECT_EQ(']', filt->get());
     //read a newline
     EXPECT_EQ('\n', filt->get());
     //read the EOF

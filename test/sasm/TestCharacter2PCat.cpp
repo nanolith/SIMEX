@@ -462,6 +462,26 @@ TEST(character2PCat, Hash)
 }
 
 /**
+ * '&' is converted to Ampersand
+ */
+TEST(character2PCat, Ampersand)
+{
+    //'&' is Ampersand
+    EXPECT_EQ(PCat::Ampersand, character2PCat(0x26));
+    EXPECT_EQ(PCat::Ampersand, character2PCat('&'));
+}
+
+/**
+ * '|' is converted to Pipe
+ */
+TEST(character2PCat, Pipe)
+{
+    //'|' is Pipe
+    EXPECT_EQ(PCat::Pipe, character2PCat(0x7c));
+    EXPECT_EQ(PCat::Pipe, character2PCat('|'));
+}
+
+/**
  * EOF is converted to EndOfFile
  */
 TEST(character2PCat, EndOfFile)

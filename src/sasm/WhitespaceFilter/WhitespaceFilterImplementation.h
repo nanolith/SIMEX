@@ -56,6 +56,7 @@ enum class WhitespaceFilterState
     LineComment,
     BlockComment,
     MaybeEndComment,
+    MaybeEscapeNewline,
     EndOfFile
 };
 

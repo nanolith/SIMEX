@@ -23,6 +23,11 @@ static bool actionLineComment(WhitespaceFilterImplementation*, int*);
 static bool actionMaybeComment(WhitespaceFilterImplementation*, int*);
 static bool actionMaybeLineEnd(WhitespaceFilterImplementation*, int*);
 static bool actionMaybeEndComment(WhitespaceFilterImplementation*, int*);
+static bool actionMaybeEscapeNewline(WhitespaceFilterImplementation*, int*);
+static bool actionEscapeToMaybeComment(WhitespaceFilterImplementation*, int*);
+static bool actionEscapeToInSpace(WhitespaceFilterImplementation*, int*);
+static bool actionEscapeToInit(WhitespaceFilterImplementation*, int*);
+static bool actionEscapeToEOFNewline(WhitespaceFilterImplementation*, int*);
 static bool dropCharacter(WhitespaceFilterImplementation*, int*);
 static bool passCharacter(WhitespaceFilterImplementation*, int*);
 static bool passCharacterToInit(WhitespaceFilterImplementation*, int*);
@@ -35,7 +40,7 @@ static bool passSlashToInSpace(WhitespaceFilterImplementation*, int*);
 /**
  * Filter state machine.
  */
-filter_method_t filterMachine[7][29] = {
+filter_method_t filterMachine[8][31] = {
     //Init State
     {
       //Whitespace --> InSpace
@@ -45,7 +50,7 @@ filter_method_t filterMachine[7][29] = {
       //FSlash --> MaybeComment
       &actionMaybeComment,
       //BSlash --> Init (pass character)
-      &passCharacter,
+      &actionMaybeEscapeNewline,
       //Star --> Init (pass character)
       &passCharacter,
       //Bang --> Init (pass character)
@@ -89,6 +94,10 @@ filter_method_t filterMachine[7][29] = {
       //Comma --> Init (pass character)
       &passCharacter,
       //Hash --> Init (pass character)
+      &passCharacter,
+      //Ampersand --> Init (pass character)
+      &passCharacter,
+      //Pipe --> Init (pass character)
       &passCharacter,
       //HighBit --> Init (pass character)
       &passCharacter,
@@ -151,6 +160,10 @@ filter_method_t filterMachine[7][29] = {
       &passSpaceToInit,
       //Hash --> Init (pass space; cache current character)
       &passSpaceToInit,
+      //Ampersand --> Init (pass space; cache current character)
+      &passSpaceToInit,
+      //Pipe --> Init (pass space; cache current character)
+      &passSpaceToInit,
       //HighBit --> Init (pass space; cache current character)
       &passSpaceToInit,
       //EOF --> EndOfFile (pass space; cache EOF)
@@ -211,6 +224,10 @@ filter_method_t filterMachine[7][29] = {
       //Comma --> Init (pass slash; cache character)
       &passSlashToInit,
       //Hash --> Init (pass slash; cache character)
+      &passSlashToInit,
+      //Ampersand --> Init (pass slash; cache character)
+      &passSlashToInit,
+      //Pipe --> Init (pass slash; cache character)
       &passSlashToInit,
       //HighBit --> Init (pass slash; cache character)
       &passSlashToInit,
@@ -273,6 +290,10 @@ filter_method_t filterMachine[7][29] = {
       &dropCharacter,
       //Hash --> LineComment (drop character)
       &dropCharacter,
+      //Ampersand --> LineComment (drop character)
+      &dropCharacter,
+      //Pipe --> LineComment (drop character)
+      &dropCharacter,
       //HighBit --> LineComment (drop character)
       &dropCharacter,
       //EOF --> EndOfFile (pass EOF)
@@ -333,6 +354,10 @@ filter_method_t filterMachine[7][29] = {
       //Comma --> BlockComment (drop character)
       &dropCharacter,
       //Hash --> BlockComment (drop character)
+      &dropCharacter,
+      //Ampersand --> BlockComment (drop character)
+      &dropCharacter,
+      //Pipe --> BlockComment (drop character)
       &dropCharacter,
       //HighBit --> BlockComment (drop character)
       &dropCharacter,
@@ -395,12 +420,81 @@ filter_method_t filterMachine[7][29] = {
       &actionBlockComment,
       //Hash --> BlockComment (drop character)
       &actionBlockComment,
+      //Ampersand --> BlockComment (drop character)
+      &actionBlockComment,
+      //Pipe --> BlockComment (drop character)
+      &actionBlockComment,
       //HighBit --> BlockComment (drop character)
       &actionBlockComment,
       //EOF --> EndOfFile (pass EOF)
       &actionMaybeLineEnd,
       //Unknown --> BlockComment (drop character)
       &actionBlockComment
+    },
+    //MaybeEscapeNewline State
+    {
+      //Whitespace --> InSpace (pass backslash and enter InSpace)
+      &actionEscapeToInSpace,
+      //LineEnd --> InSpace (drop backslash and newline)
+      &actionBeginWhitespace,
+      //FSlash --> Init (pass backslash and character)
+      &actionEscapeToMaybeComment,
+      //BSlash --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Star --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Bang --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //DoubleQuote --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Exp --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Alpha --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Underscore --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //HexX --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //BinB --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //BNum --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //ONum --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //DNum --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //HNum --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Dot --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Plus --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Minus --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //OParen --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //CParen --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Lt -- Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Eq -- Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Gt -- Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Comma --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Hash --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Ampersand --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //Ampersand --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //HighBit --> Init (pass backslash and character)
+      &actionEscapeToInit,
+      //EOF --> Init (pass backslash and character)
+      &actionEscapeToEOFNewline,
+      //Unknown --> Init (pass backslash and character)
+      &actionEscapeToInit
     },
     //EndOfFile State
     {
@@ -455,6 +549,10 @@ filter_method_t filterMachine[7][29] = {
       //Comma --> EndOfFile (EOF)
       &passCharacter,
       //Hash --> EndOfFile (EOF)
+      &passCharacter,
+      //Ampersand --> EndOfFile (EOF)
+      &passCharacter,
+      //Ampersand --> EndOfFile (EOF)
       &passCharacter,
       //HighBit --> EndOfFile (EOF)
       &passCharacter,
@@ -586,6 +684,80 @@ static bool actionMaybeEndComment(
         whitespaceFilterState2index(WhitespaceFilterState::MaybeEndComment);
 
     return true;
+}
+
+/**
+ * Transition to the MaybeEscapeNewline state.
+ */
+static bool actionMaybeEscapeNewline(
+    WhitespaceFilterImplementation* impl, int* ch)
+{
+    impl->inputState =
+        whitespaceFilterState2index(
+            WhitespaceFilterState::MaybeEscapeNewline);
+
+    return true;
+}
+
+/**
+ * Pass the backslash character and enter the MaybeComment state.
+ */
+static bool actionEscapeToMaybeComment(
+    WhitespaceFilterImplementation* impl, int* ch)
+{
+    impl->inputState =
+        whitespaceFilterState2index(
+            WhitespaceFilterState::MaybeComment);
+    *ch = '\\';
+
+    return false;
+}
+
+/**
+ * Pass the backslash character and enter the InSpace state.
+ */
+static bool actionEscapeToInSpace(
+    WhitespaceFilterImplementation* impl, int* ch)
+{
+    impl->inputState =
+        whitespaceFilterState2index(
+            WhitespaceFilterState::InSpace);
+    *ch = '\\';
+
+    return false;
+}
+
+/**
+ * Pass the backslash character, cache the current character, and enter the Init
+ * state.
+ */
+static bool actionEscapeToInit(
+    WhitespaceFilterImplementation* impl, int* ch)
+{
+    //cache the current character
+    impl->cachedChar = *ch;
+    impl->haveCachedChar = true;
+    *ch = '\\';
+
+    impl->inputState =
+        whitespaceFilterState2index(
+            WhitespaceFilterState::Init);
+
+    return false;
+}
+
+/**
+ * Pass the backslash character and go back to Init.
+ */
+static bool actionEscapeToEOFNewline(
+    WhitespaceFilterImplementation* impl, int* ch)
+{
+    impl->inputState =
+        whitespaceFilterState2index(
+            WhitespaceFilterState::Init);
+    *ch = '\\';
+
+    return false;
 }
 
 /**

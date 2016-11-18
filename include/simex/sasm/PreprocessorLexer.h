@@ -84,6 +84,10 @@ enum class PCat
     Comma,
     //#
     Hash,
+    //&
+    Ampersand,
+    //|
+    Pipe,
     //a byte with the high bit set
     HighBit,
     //EOF

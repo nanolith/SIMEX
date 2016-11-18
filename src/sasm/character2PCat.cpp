@@ -35,7 +35,7 @@ static PCat pcatTranslationArray[256] = {
     //0x20 ' '         0x21 '!'           0x22 '"'           0x23 '#'
     PCat::Whitespace,  PCat::Bang,        PCat::DoubleQuote, PCat::Hash,
     //0x24             0x25               0x26               0x27
-    PCat::Unknown,     PCat::Unknown,     PCat::Unknown,     PCat::Unknown,
+    PCat::Unknown,     PCat::Unknown,     PCat::Ampersand,   PCat::Unknown,
     //0x28 '('         0x29 ')'           0x2a '*'           0x2b '+'
     PCat::OParen,      PCat::CParen,      PCat::Star,        PCat::Plus,
     //0x2c ','         0x2d '-'           0x2e '.'           0x2f '/'
@@ -79,7 +79,7 @@ static PCat pcatTranslationArray[256] = {
     //0x78 'x'         0x79 'y'           0x7a 'z'           0x7b
     PCat::HexX,        PCat::Alpha,       PCat::Alpha,       PCat::Unknown,
     //0x7c             0x7d               0x7e               0x7f
-    PCat::Unknown,     PCat::Unknown,     PCat::Unknown,     PCat::Unknown,
+    PCat::Pipe,        PCat::Unknown,     PCat::Unknown,     PCat::Unknown,
     //0x80             0x81               0x82               0x83
     PCat::HighBit,     PCat::HighBit,     PCat::HighBit,     PCat::HighBit,
     //0x84             0x85               0x86               0x87
