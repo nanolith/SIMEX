@@ -300,12 +300,12 @@ public:
     /**
      * Returns the integer representation of the current token.
      */
-    int64_t intTok();
+    std::int64_t intTok();
 
     /**
      * Returns the unsigned integer representation of the current token.
      */
-    uint64_t uintTok();
+    std::uint64_t uintTok();
 
     /**
      * Returns the double representation of the current token.
