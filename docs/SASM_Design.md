@@ -183,6 +183,7 @@ parser.  The list of tokens supported by the preprocessor lexer are below.
     PTok::SystemString
     PTok::Include
     PTok::IfDef
+    PTok::IfNDef
     PTok::If
     PTok::ElIf
     PTok::Else

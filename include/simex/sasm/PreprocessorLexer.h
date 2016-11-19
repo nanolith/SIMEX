@@ -137,6 +137,8 @@ enum class PTok
     Include,
     //#ifdef preprocessing directive
     IfDef,
+    //#ifndef
+    IfNDef,
     //#if preprocessing directive
     If,
     //#elif preprocessing directive
