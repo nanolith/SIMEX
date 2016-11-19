@@ -252,6 +252,70 @@ private:
     std::unique_ptr<WhitespaceFilterImplementation> impl_;
 };
 
+/**
+ * Forward declaration to the private PreprocessorLexerImplementation.
+ */
+struct PreprocessorLexerImplementation;
+
+/**
+ * The PreprocessorLexer class transforms an input stream to a series of tokens
+ * that can be fed into the PreprocessorParser.  Methods to return the string,
+ * integer, and double representations of tokens, where applicable, are
+ * provided.
+ */
+class PreprocessorLexer : virtual public LineFilter
+{
+public:
+
+    /**
+     * A PreprocessorLexer is created from an input stream.
+     *
+     * \param istream       The input stream used for this filter.
+     */
+    PreprocessorLexer(std::istream& in);
+
+    /**
+     * Destructor.  Clean up this instance.
+     */
+    virtual ~PreprocessorLexer();
+
+    /**
+     * The get method returns a token from the input stream.
+     *
+     * \returns a token from the input stream, or PTok::EndOfFile if the end of
+     * the input stream has been reached.
+     */
+    PTok get();
+
+    /**
+     * Returns the current physical line number for this input stream.
+     */
+    virtual int lineNumber();
+
+    /**
+     * Returns the string representation of the current token.
+     */
+    std::string stringTok();
+
+    /**
+     * Returns the integer representation of the current token.
+     */
+    int64_t intTok();
+
+    /**
+     * Returns the unsigned integer representation of the current token.
+     */
+    uint64_t uintTok();
+
+    /**
+     * Returns the double representation of the current token.
+     */
+    double doubleTok();
+
+private:
+    std::unique_ptr<PreprocessorLexerImplementation> impl_;
+};
+
 /* namespace sasm */ } /* namespace simex */ }
 
 //end of C++ code

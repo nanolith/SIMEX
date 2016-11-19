@@ -9,7 +9,7 @@ SRCDIR=$(PWD)/src
 TESTDIR=$(PWD)/test
 TESTDIRS=$(TESTDIR) $(TESTDIR)/sasm
 DIRS=$(SRCDIR) $(SRCDIR)/Instruction $(SRCDIR)/sasm $(SRCDIR)/sasm/LineFilter \
-     $(SRCDIR)/sasm/WhitespaceFilter
+     $(SRCDIR)/sasm/WhitespaceFilter $(SRCDIR)/sasm/PreprocessorLexer
 CHECKED_DIRS=$(filter-out $(SRCDIR),$(patsubst $(SRCDIR)/%,$(CHECKED_BUILD_DIR)/%,$(DIRS)))
 RELEASE_DIRS=$(filter-out $(SRCDIR),$(patsubst $(SRCDIR)/%,$(RELEASE_BUILD_DIR)/%,$(DIRS)))
 TEST_DIRS=$(filter-out $(TESTDIR),$(patsubst $(TESTDIR)/%,$(TEST_BUILD_DIR)/%,$(TESTDIRS)))
