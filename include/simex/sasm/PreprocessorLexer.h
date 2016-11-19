@@ -174,7 +174,9 @@ enum class PTok
     //#identifier -- also acts as intermediate for reducing directives above.
     Stringify,
     //All other input.  Typically passed to the downstream lexer as-is.
-    Unknown
+    Unknown,
+    //indicates when the end of an input stream has been reached.
+    EndOfFile
 };
 
 /**

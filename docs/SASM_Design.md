@@ -202,6 +202,7 @@ parser.  The list of tokens supported by the preprocessor lexer are below.
     PTok::Concat
     PTok::Stringify
     PTok::Unknown
+    PTok::EndOfFile
 
 The preprocessor uses newlines to delimit preprocessor directives.  The
 preprocessor lexer reduces a hash token followed by an identifier into either
