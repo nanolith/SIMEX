@@ -312,6 +312,11 @@ public:
      */
     double doubleTok();
 
+    /**
+     * Returns the line number where the token started.
+     */
+    int tokenStartLineNumber();
+
 private:
     std::unique_ptr<PreprocessorLexerImplementation> impl_;
 };
