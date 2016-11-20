@@ -31,3 +31,19 @@ TEST(PreprocessorLexer, init)
     //the first line is 1.
     EXPECT_EQ(1, lexer->lineNumber());
 }
+
+/**
+ * Test that empty input returns an empty line followed by EOF.
+ */
+TEST(PreprocessorLexer, readEOF)
+{
+    stringstream in("");
+
+    //create the preprocessor lexer
+    auto lexer = make_shared<PreprocessorLexer>(in);
+
+    //read a newline token
+    EXPECT_EQ(PTok::Newline, lexer->get());
+    //read an EOF
+    EXPECT_EQ(PTok::EndOfFile, lexer->get());
+}
