@@ -176,7 +176,9 @@ enum class PTok
     //All other input.  Typically passed to the downstream lexer as-is.
     Unknown,
     //indicates when the end of an input stream has been reached.
-    EndOfFile
+    EndOfFile,
+    //Error token.  Indicate that the lexer encountered an invalid sequence.
+    InputError
 };
 
 /**

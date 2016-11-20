@@ -46,4 +46,5 @@ TEST(ptok2index, basicTest)
     EXPECT_EQ(22, ptok2index(PTok::Stringify));
     EXPECT_EQ(23, ptok2index(PTok::Unknown));
     EXPECT_EQ(24, ptok2index(PTok::EndOfFile));
+    EXPECT_EQ(25, ptok2index(PTok::InputError));
 }
