@@ -195,9 +195,30 @@ inline int ptok2index(PTok tok)
 }
 
 /**
+ * The Filter interface is a source of filtered input.
+ */
+class Filter
+{
+public:
+
+    /**
+     * Filter destructor.
+     */
+    virtual ~Filter();
+
+    /**
+     * The get method works like istream::get(), except that the input is
+     * filtered.
+     *
+     * \returns a filtered input byte, or EOF on EOF.
+     */
+    virtual int get() = 0;
+};
+
+/**
  * The LineFilter interface tracks the current line number.
  */
-class LineFilter
+class LineFilter : public Filter
 {
 public:
 
@@ -210,6 +231,52 @@ public:
      * Get the current line number.
      */
     virtual int lineNumber() = 0;
+
+    /**
+     * Get the current column number.
+     */
+    virtual int columnNumber() = 0;
+};
+
+/**
+ * The LineFilterImpl class tracks the current line number.
+ */
+class LineFilterImpl : public LineFilter
+{
+public:
+
+    /**
+     * Constructor.  Create a LineFilterImpl from an input stream.
+     */
+    LineFilterImpl(std::istream& in);
+
+    /**
+     * Virtual destructor.
+     */
+    virtual ~LineFilterImpl();
+
+    /**
+     * The get method works like istream::get(), except that the input is
+     * filtered.
+     *
+     * \returns a filtered input byte, or EOF on EOF.
+     */
+    virtual int get();
+
+    /**
+     * Get the current line number.
+     */
+    virtual int lineNumber();
+
+    /**
+     * Get the current column number.
+     */
+    virtual int columnNumber();
+
+private:
+    std::istream& in_;
+    int lineNumber_;
+    int columnNumber_;
 };
 
 /**
@@ -243,12 +310,17 @@ public:
      *
      * \returns a filtered input byte, or EOF on EOF.
      */
-    int get();
+    virtual int get();
 
     /**
      * Returns the current physical line number for this input stream.
      */
     virtual int lineNumber();
+
+    /**
+     * Get the current column number.
+     */
+    virtual int columnNumber();
 
 private:
     std::unique_ptr<WhitespaceFilterImplementation> impl_;
@@ -265,7 +337,7 @@ struct PreprocessorLexerImplementation;
  * integer, and double representations of tokens, where applicable, are
  * provided.
  */
-class PreprocessorLexer : virtual public LineFilter
+class PreprocessorLexer
 {
 public:
 
@@ -292,7 +364,12 @@ public:
     /**
      * Returns the current physical line number for this input stream.
      */
-    virtual int lineNumber();
+    int lineNumber();
+
+    /**
+     * Get the current column number.
+     */
+    int columnNumber();
 
     /**
      * Returns the string representation of the current token.

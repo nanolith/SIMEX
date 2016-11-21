@@ -30,6 +30,8 @@ TEST(WhitespaceFilter, init)
 
     //the first line is 1.
     EXPECT_EQ(1, filt->lineNumber());
+    //the first column is 0.
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -71,6 +73,56 @@ TEST(WhitespaceFilter, spaceCondense)
 }
 
 /**
+ * Test that the column updates as bytes are read.
+ */
+TEST(WhitespaceFilter, columnReadSimple)
+{
+    stringstream in("abcdefg");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the a value
+    EXPECT_EQ('a', filt->get());
+    //we are on column 1
+    EXPECT_EQ(1, filt->columnNumber());
+    //read the b value
+    EXPECT_EQ('b', filt->get());
+    //we are on column 2
+    EXPECT_EQ(2, filt->columnNumber());
+    //read the c value
+    EXPECT_EQ('c', filt->get());
+    //we are on column 3
+    EXPECT_EQ(3, filt->columnNumber());
+    //read the d value
+    EXPECT_EQ('d', filt->get());
+    //we are on column 4
+    EXPECT_EQ(4, filt->columnNumber());
+    //read the e value
+    EXPECT_EQ('e', filt->get());
+    //we are on column 5
+    EXPECT_EQ(5, filt->columnNumber());
+    //read the f value
+    EXPECT_EQ('f', filt->get());
+    //we are on column 6
+    EXPECT_EQ(6, filt->columnNumber());
+    //read the g value
+    EXPECT_EQ('g', filt->get());
+    //we are on column 7
+    EXPECT_EQ(7, filt->columnNumber());
+    //read the newline
+    EXPECT_EQ('\n', filt->get());
+    //we are on column 0 and line 2
+    EXPECT_EQ(0, filt->columnNumber());
+    EXPECT_EQ(2, filt->lineNumber());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+    //we are on column 0 and line 2
+    EXPECT_EQ(0, filt->columnNumber());
+    EXPECT_EQ(2, filt->lineNumber());
+}
+
+/**
  * Test that a newline in the middle of spaces results in NL space.
  */
 TEST(WhitespaceFilter, spaceNewlineCondensed)
@@ -106,6 +158,31 @@ TEST(WhitespaceFilter, blockCommentSpace)
     EXPECT_EQ(' ', filt->get());
     //read the X
     EXPECT_EQ('X', filt->get());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    //read EOF
+    EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that the column is updated with a block comment.
+ */
+TEST(WhitespaceFilter, blockCommentColumn)
+{
+    stringstream in("X/*foo*/Y");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the X
+    EXPECT_EQ('X', filt->get());
+    //read a space
+    EXPECT_EQ(' ', filt->get());
+    //read the Y
+    EXPECT_EQ('Y', filt->get());
+    //the Y should be at line 1 column 9
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(9, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
     //read EOF
@@ -288,7 +365,7 @@ TEST(WhitespaceFilter, blockCommentLinesElided)
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
     //the line count should be updated, however
-    EXPECT_EQ(5, filt->lineNumber());
+    EXPECT_EQ(6, filt->lineNumber());
 }
 
 /**

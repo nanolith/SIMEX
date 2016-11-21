@@ -30,6 +30,8 @@ TEST(PreprocessorLexer, init)
 
     //the first line is 1.
     EXPECT_EQ(1, lexer->lineNumber());
+    //the first column is 0.
+    EXPECT_EQ(0, lexer->columnNumber());
 }
 
 /**
@@ -46,4 +48,8 @@ TEST(PreprocessorLexer, readEOF)
     EXPECT_EQ(PTok::Newline, lexer->get());
     //read an EOF
     EXPECT_EQ(PTok::EndOfFile, lexer->get());
+    //the line is 2
+    EXPECT_EQ(2, lexer->lineNumber());
+    //the column is 0.
+    EXPECT_EQ(0, lexer->columnNumber());
 }

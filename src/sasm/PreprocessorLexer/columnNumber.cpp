@@ -1,7 +1,7 @@
 /**
- * \file sasm/WhitespaceFilter/lineNumber.cpp
+ * \file sasm/PreprocessorLexer/columnNumber.cpp
  *
- * Implementation of WhitespaceFilter::lineNumber()
+ * Implementation of PreprocessorLexer::columnNumber().
  *
  * Copyright (C) 2016 Justin Handville - All Rights Reserved.
  *
@@ -11,20 +11,15 @@
  */
 
 #include <simex/sasm/PreprocessorLexer.h>
-#include "WhitespaceFilterImplementation.h"
+#include "PreprocessorLexerImplementation.h"
 
 using namespace simex::sasm;
 using namespace std;
 
 /**
- * Returns the current physical line number for this input stream.
+ * Get the current column number.
  */
-int WhitespaceFilter::lineNumber()
+int PreprocessorLexer::columnNumber()
 {
-    int lineNo = impl_->in_.lineNumber();
-
-    if (impl_->isEof)
-        ++lineNo;
-
-    return lineNo;
+    return impl_->filt_.columnNumber();
 }

@@ -578,12 +578,6 @@ static bool filter(WhitespaceFilterImplementation* impl, int* ch)
     //get the input category for this byte.
     PCat cat = character2PCat(*ch);
 
-    //special handling for NL
-    if (cat == PCat::LineEnd)
-    {
-        ++impl->lineNumber_;
-    }
-
     return (filterMachine[impl->inputState][pcat2index(cat)])(impl, ch);
 }
 
@@ -666,6 +660,7 @@ static bool actionMaybeLineEnd(WhitespaceFilterImplementation* impl, int* ch)
 {
     impl->haveCachedChar = true;
     impl->cachedChar = *ch;
+    impl->isEof = true;
     *ch = '\n';
 
     impl->inputState =
@@ -796,6 +791,7 @@ static bool passSpaceToEndOfFile(
     //we can omit the final space.
     impl->cachedChar = EOF;
     impl->haveCachedChar = true;
+    impl->isEof = true;
     *ch = '\n';
 
     impl->inputState =

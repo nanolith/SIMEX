@@ -1,7 +1,7 @@
 /**
- * \file sasm/WhitespaceFilter/WhitespaceFilter.cpp
+ * \file sasm/WhitespaceFilter/columnNumber.cpp
  *
- * Constructor for WhitespaceFilter.
+ * Implementation of WhitespaceFilter::columnNumber()
  *
  * Copyright (C) 2016 Justin Handville - All Rights Reserved.
  *
@@ -17,11 +17,12 @@ using namespace simex::sasm;
 using namespace std;
 
 /**
- * A WhitespaceFilter is created from an input stream.
- *
- * \param istream       The input stream used for this filter.
+ * Get the current column number.
  */
-WhitespaceFilter::WhitespaceFilter(std::istream& in)
-    : impl_(make_unique<WhitespaceFilterImplementation>(in))
+int WhitespaceFilter::columnNumber()
 {
+    if (impl_->isEof)
+        return 0;
+
+    return impl_->in_.columnNumber();
 }

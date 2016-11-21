@@ -27,17 +27,17 @@ namespace simex { namespace sasm {
  */
 struct WhitespaceFilterImplementation
 {
-    WhitespaceFilterImplementation(std::istream& in, int lineNumber)
-        : in_(in), lineNumber_(lineNumber), haveCachedChar(false),
-          cachedChar(-1), inputState(0)
+    WhitespaceFilterImplementation(std::istream& in)
+        : in_(in), haveCachedChar(false), cachedChar(-1), inputState(0),
+          isEof(false)
     {
     }
 
-    std::istream& in_;
-    int lineNumber_;
+    LineFilterImpl in_;
     bool haveCachedChar;
     int cachedChar;
     int inputState;
+    bool isEof;
 };
 
 /**
