@@ -46,8 +46,12 @@ TEST(WhitespaceFilter, emptyEOF)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read an EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -62,14 +66,24 @@ TEST(WhitespaceFilter, spaceCondense)
 
     //read the A value
     EXPECT_EQ('A', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a single space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(8, filt->columnNumber());
     //read the Z value
     EXPECT_EQ('Z', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(9, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read an EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -134,14 +148,24 @@ TEST(WhitespaceFilter, spaceNewlineCondensed)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the next space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(4, filt->columnNumber());
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(5, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read an EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -156,12 +180,20 @@ TEST(WhitespaceFilter, blockCommentSpace)
 
     //read the first space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(7, filt->columnNumber());
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(8, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -189,8 +221,12 @@ TEST(WhitespaceFilter, blockCommentColumn)
     EXPECT_EQ(9, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -272,6 +308,18 @@ TEST(WhitespaceFilter, forwardSlashNLColumn)
     EXPECT_EQ('/', filt->get());
     EXPECT_EQ(1, filt->lineNumber());
     EXPECT_EQ(1, filt->columnNumber());
+    //read the newline
+    EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+    //read the newline
+    EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+    //read the EOF
+    EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -286,14 +334,24 @@ TEST(WhitespaceFilter, nakedSlash)
 
     //read the x
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read the y
     EXPECT_EQ('y', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(3, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -308,10 +366,16 @@ TEST(WhitespaceFilter, slashEOF)
 
     //read the slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -327,15 +391,20 @@ TEST(WhitespaceFilter, NLslashEOF)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the slash
     EXPECT_EQ('/', filt->get());
-    //We should be on line 2, column 1
     EXPECT_EQ(2, filt->lineNumber());
     EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -350,12 +419,20 @@ TEST(WhitespaceFilter, blockCommentStars)
 
     //read the first space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(13, filt->columnNumber());
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(14, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -370,16 +447,24 @@ TEST(WhitespaceFilter, lastLineHasNL)
 
     //read the A.
     EXPECT_EQ('A', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
-    //we are now on line 2
-    ASSERT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the B
     EXPECT_EQ('B', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -394,8 +479,12 @@ TEST(WhitespaceFilter, noSpaceEOF)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF.
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -410,14 +499,24 @@ TEST(WhitespaceFilter, EOFAndNLSpaceElided)
 
     //read the X.
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the Y
     EXPECT_EQ('Y', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -432,8 +531,12 @@ TEST(WhitespaceFilter, trailingCommentElided)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -448,10 +551,12 @@ TEST(WhitespaceFilter, blockCommentLinesElided)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(6, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
-    //the line count should be updated, however
-    EXPECT_EQ(5, filt->lineNumber());
+    EXPECT_EQ(6, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -466,12 +571,20 @@ TEST(WhitespaceFilter, NLtrailingCommentElided)
 
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the second newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -486,12 +599,20 @@ TEST(WhitespaceFilter, lineCommentSimple)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the Y
     EXPECT_EQ('Y', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the second newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -506,8 +627,12 @@ TEST(WhitespaceFilter, lineCommentEOF)
 
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -522,14 +647,24 @@ TEST(WhitespaceFilter, exprLineComment)
 
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the Y
     EXPECT_EQ('Y', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read the Z
     EXPECT_EQ('Z', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(3, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -544,20 +679,36 @@ TEST(WhitespaceFilter, lineCommentsToNewlines)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(4, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the A
     EXPECT_EQ('A', filt->get());
+    EXPECT_EQ(4, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(5, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(6, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(7, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(7, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -572,8 +723,12 @@ TEST(WhitespaceFilter, lineCommentSpacesElided)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -588,14 +743,24 @@ TEST(WhitespaceFilter, escapedNewline)
 
     //read the a
     EXPECT_EQ('a', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a whitespace
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the b
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -610,14 +775,24 @@ TEST(WhitespaceFilter, backslashLineComment)
 
     //read the backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the b
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -632,14 +807,24 @@ TEST(WhitespaceFilter, backslashBlockComment)
 
     //read the backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(8, filt->columnNumber());
     //read the b
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(9, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -654,10 +839,16 @@ TEST(WhitespaceFilter, LineEndInit)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -672,10 +863,16 @@ TEST(WhitespaceFilter, BackslashInit)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -690,10 +887,16 @@ TEST(WhitespaceFilter, StarInit)
 
     //read a star
     EXPECT_EQ('*', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -708,10 +911,16 @@ TEST(WhitespaceFilter, BangInit)
 
     //read a bang
     EXPECT_EQ('!', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -726,10 +935,16 @@ TEST(WhitespaceFilter, DoubleQuoteInit)
 
     //read a doublequote
     EXPECT_EQ('"', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -744,10 +959,16 @@ TEST(WhitespaceFilter, ExpInit)
 
     //read an exp
     EXPECT_EQ('e', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -762,10 +983,16 @@ TEST(WhitespaceFilter, AlphaInit)
 
     //read an alpha
     EXPECT_EQ('g', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -780,10 +1007,16 @@ TEST(WhitespaceFilter, UnderscoreInit)
 
     //read an underscore
     EXPECT_EQ('_', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -798,10 +1031,16 @@ TEST(WhitespaceFilter, HexXInit)
 
     //read a HexX
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -816,10 +1055,16 @@ TEST(WhitespaceFilter, BinBInit)
 
     //read a BinB
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -834,10 +1079,16 @@ TEST(WhitespaceFilter, BNumInit)
 
     //read a BNum
     EXPECT_EQ('1', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -852,10 +1103,16 @@ TEST(WhitespaceFilter, ONumInit)
 
     //read an ONum
     EXPECT_EQ('7', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -870,10 +1127,16 @@ TEST(WhitespaceFilter, DNumInit)
 
     //read a DNum
     EXPECT_EQ('9', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -888,10 +1151,16 @@ TEST(WhitespaceFilter, HNumInit)
 
     //read an HNum
     EXPECT_EQ('C', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -906,10 +1175,16 @@ TEST(WhitespaceFilter, DotInit)
 
     //read a Dot
     EXPECT_EQ('.', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -924,10 +1199,16 @@ TEST(WhitespaceFilter, PlusInit)
 
     //read a Plus
     EXPECT_EQ('+', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -942,10 +1223,16 @@ TEST(WhitespaceFilter, MinusInit)
 
     //read a Minus
     EXPECT_EQ('-', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -960,10 +1247,16 @@ TEST(WhitespaceFilter, OParenInit)
 
     //read an OParen
     EXPECT_EQ('(', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -978,10 +1271,16 @@ TEST(WhitespaceFilter, CParenInit)
 
     //read a CParen
     EXPECT_EQ(')', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -996,10 +1295,16 @@ TEST(WhitespaceFilter, LtInit)
 
     //read a Lt
     EXPECT_EQ('<', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1014,10 +1319,16 @@ TEST(WhitespaceFilter, EqInit)
 
     //read an Eq
     EXPECT_EQ('=', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1032,10 +1343,16 @@ TEST(WhitespaceFilter, GtInit)
 
     //read a Gt
     EXPECT_EQ('>', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1050,10 +1367,16 @@ TEST(WhitespaceFilter, CommaInit)
 
     //read a Comma
     EXPECT_EQ(',', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1068,10 +1391,16 @@ TEST(WhitespaceFilter, HashInit)
 
     //read a Hash
     EXPECT_EQ('#', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1086,10 +1415,16 @@ TEST(WhitespaceFilter, AmpersandInit)
 
     //read an Ampersand
     EXPECT_EQ('&', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1104,10 +1439,16 @@ TEST(WhitespaceFilter, PipeInit)
 
     //read a Pipe
     EXPECT_EQ('|', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1122,10 +1463,16 @@ TEST(WhitespaceFilter, HighBitInit)
 
     //read a HighBit
     EXPECT_EQ(0x82, filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1140,8 +1487,12 @@ TEST(WhitespaceFilter, EOFInit)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1156,10 +1507,16 @@ TEST(WhitespaceFilter, UnknownInit)
 
     //read an Unknown
     EXPECT_EQ(']', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1175,10 +1532,16 @@ TEST(WhitespaceFilter, LineEndInSpace)
     //the space will be elided
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline (end of second line)
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1193,12 +1556,20 @@ TEST(WhitespaceFilter, BackslashInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1213,12 +1584,20 @@ TEST(WhitespaceFilter, StarInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a star
     EXPECT_EQ('*', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1233,12 +1612,20 @@ TEST(WhitespaceFilter, BangInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a bang
     EXPECT_EQ('!', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1253,12 +1640,20 @@ TEST(WhitespaceFilter, DoubleQuoteInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a doublequote
     EXPECT_EQ('"', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1273,12 +1668,20 @@ TEST(WhitespaceFilter, ExpInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an exp
     EXPECT_EQ('e', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1293,12 +1696,20 @@ TEST(WhitespaceFilter, AlphaInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an alpha
     EXPECT_EQ('g', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1313,12 +1724,20 @@ TEST(WhitespaceFilter, UnderscoreInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an underscore
     EXPECT_EQ('_', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1333,12 +1752,20 @@ TEST(WhitespaceFilter, HexXInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a HexX
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1353,12 +1780,20 @@ TEST(WhitespaceFilter, BinBInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BinB
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1373,12 +1808,20 @@ TEST(WhitespaceFilter, BNumInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BNum
     EXPECT_EQ('1', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1393,12 +1836,20 @@ TEST(WhitespaceFilter, ONumInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an ONum
     EXPECT_EQ('7', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1413,12 +1864,20 @@ TEST(WhitespaceFilter, DNumInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a DNum
     EXPECT_EQ('9', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1433,12 +1892,20 @@ TEST(WhitespaceFilter, HNumInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an HNum
     EXPECT_EQ('C', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1453,12 +1920,20 @@ TEST(WhitespaceFilter, DotInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Dot
     EXPECT_EQ('.', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1473,12 +1948,20 @@ TEST(WhitespaceFilter, PlusInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Plus
     EXPECT_EQ('+', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1493,12 +1976,20 @@ TEST(WhitespaceFilter, MinusInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Minus
     EXPECT_EQ('-', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1513,12 +2004,20 @@ TEST(WhitespaceFilter, OParenInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an OParen
     EXPECT_EQ('(', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1533,12 +2032,20 @@ TEST(WhitespaceFilter, CParenInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a CParen
     EXPECT_EQ(')', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1553,12 +2060,20 @@ TEST(WhitespaceFilter, LtInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Lt
     EXPECT_EQ('<', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1573,12 +2088,20 @@ TEST(WhitespaceFilter, EqInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Eq
     EXPECT_EQ('=', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1593,12 +2116,20 @@ TEST(WhitespaceFilter, GtInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Gt
     EXPECT_EQ('>', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1613,12 +2144,20 @@ TEST(WhitespaceFilter, CommaInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Comma
     EXPECT_EQ(',', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1633,12 +2172,20 @@ TEST(WhitespaceFilter, HashInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Hash
     EXPECT_EQ('#', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1653,12 +2200,20 @@ TEST(WhitespaceFilter, AmpersandInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Ampersand
     EXPECT_EQ('&', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1673,12 +2228,20 @@ TEST(WhitespaceFilter, PipeInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Pipe
     EXPECT_EQ('|', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1693,12 +2256,20 @@ TEST(WhitespaceFilter, HighBitInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a HighBit
     EXPECT_EQ(0x82, filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1713,8 +2284,12 @@ TEST(WhitespaceFilter, EOFInSpace)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1729,12 +2304,20 @@ TEST(WhitespaceFilter, UnknownInSpace)
 
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Unknown
     EXPECT_EQ(']', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1749,10 +2332,16 @@ TEST(WhitespaceFilter, WhitespaceMaybeComment)
 
     //read the slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1767,12 +2356,20 @@ TEST(WhitespaceFilter, LineEndMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read a newline (end of second line)
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1787,12 +2384,20 @@ TEST(WhitespaceFilter, BackslashMaybeComment)
 
     //read a forward slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1807,12 +2412,20 @@ TEST(WhitespaceFilter, BangMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a bang
     EXPECT_EQ('!', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1827,12 +2440,20 @@ TEST(WhitespaceFilter, DoubleQuoteMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a doublequote
     EXPECT_EQ('"', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1847,12 +2468,20 @@ TEST(WhitespaceFilter, ExpMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an exp
     EXPECT_EQ('e', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1867,12 +2496,20 @@ TEST(WhitespaceFilter, AlphaMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an alpha
     EXPECT_EQ('g', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1887,12 +2524,20 @@ TEST(WhitespaceFilter, UnderscoreMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an underscore
     EXPECT_EQ('_', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1907,12 +2552,20 @@ TEST(WhitespaceFilter, HexXMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a HexX
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1927,12 +2580,20 @@ TEST(WhitespaceFilter, BinBMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BinB
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1947,12 +2608,20 @@ TEST(WhitespaceFilter, BNumMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BNum
     EXPECT_EQ('1', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1967,12 +2636,20 @@ TEST(WhitespaceFilter, ONumMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an ONum
     EXPECT_EQ('7', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -1987,12 +2664,20 @@ TEST(WhitespaceFilter, DNumMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a DNum
     EXPECT_EQ('9', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2007,12 +2692,20 @@ TEST(WhitespaceFilter, HNumMaybeComment)
 
     //read a space
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an HNum
     EXPECT_EQ('C', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2027,12 +2720,20 @@ TEST(WhitespaceFilter, DotMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Dot
     EXPECT_EQ('.', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2047,12 +2748,20 @@ TEST(WhitespaceFilter, PlusMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Plus
     EXPECT_EQ('+', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2067,12 +2776,20 @@ TEST(WhitespaceFilter, MinusMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Minus
     EXPECT_EQ('-', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2087,12 +2804,20 @@ TEST(WhitespaceFilter, OParenMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an OParen
     EXPECT_EQ('(', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2107,12 +2832,20 @@ TEST(WhitespaceFilter, CParenMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a CParen
     EXPECT_EQ(')', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2127,12 +2860,20 @@ TEST(WhitespaceFilter, LtMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Lt
     EXPECT_EQ('<', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2147,12 +2888,20 @@ TEST(WhitespaceFilter, EqMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Eq
     EXPECT_EQ('=', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2167,12 +2916,20 @@ TEST(WhitespaceFilter, GtMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Gt
     EXPECT_EQ('>', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2187,12 +2944,20 @@ TEST(WhitespaceFilter, CommaMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Comma
     EXPECT_EQ(',', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2207,12 +2972,20 @@ TEST(WhitespaceFilter, HashMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Hash
     EXPECT_EQ('#', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2227,12 +3000,20 @@ TEST(WhitespaceFilter, AmpersandMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Ampersand
     EXPECT_EQ('&', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2247,12 +3028,20 @@ TEST(WhitespaceFilter, PipeMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Pipe
     EXPECT_EQ('|', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2267,12 +3056,20 @@ TEST(WhitespaceFilter, HighBitMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a HighBit
     EXPECT_EQ(0x82, filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2287,10 +3084,16 @@ TEST(WhitespaceFilter, EOFMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2305,12 +3108,20 @@ TEST(WhitespaceFilter, UnknownMaybeComment)
 
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an Unknown
     EXPECT_EQ(']', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2325,8 +3136,12 @@ TEST(WhitespaceFilter, WhitespaceLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2341,12 +3156,20 @@ TEST(WhitespaceFilter, LineEndLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the x
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline (end of second line)
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2361,8 +3184,12 @@ TEST(WhitespaceFilter, FSlashLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2377,8 +3204,12 @@ TEST(WhitespaceFilter, BackslashLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2393,8 +3224,12 @@ TEST(WhitespaceFilter, StarLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2409,8 +3244,12 @@ TEST(WhitespaceFilter, BangLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2425,8 +3264,12 @@ TEST(WhitespaceFilter, DoubleQuoteLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2441,8 +3284,12 @@ TEST(WhitespaceFilter, ExpLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2457,8 +3304,12 @@ TEST(WhitespaceFilter, AlphaLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2473,8 +3324,12 @@ TEST(WhitespaceFilter, UnderscoreLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2489,8 +3344,12 @@ TEST(WhitespaceFilter, HexXLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2505,8 +3364,12 @@ TEST(WhitespaceFilter, BinBLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2521,8 +3384,12 @@ TEST(WhitespaceFilter, BNumLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2537,8 +3404,12 @@ TEST(WhitespaceFilter, ONumLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2553,8 +3424,12 @@ TEST(WhitespaceFilter, DNumLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2569,8 +3444,12 @@ TEST(WhitespaceFilter, HNumLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2585,8 +3464,12 @@ TEST(WhitespaceFilter, DotLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2601,8 +3484,12 @@ TEST(WhitespaceFilter, PlusLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2617,8 +3504,12 @@ TEST(WhitespaceFilter, MinusLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2633,8 +3524,12 @@ TEST(WhitespaceFilter, OParenLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2649,8 +3544,12 @@ TEST(WhitespaceFilter, CParenLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2665,8 +3564,12 @@ TEST(WhitespaceFilter, LtLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2681,8 +3584,12 @@ TEST(WhitespaceFilter, EqLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2697,8 +3604,12 @@ TEST(WhitespaceFilter, GtLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2713,8 +3624,12 @@ TEST(WhitespaceFilter, CommaLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2729,8 +3644,12 @@ TEST(WhitespaceFilter, HashLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2745,8 +3664,12 @@ TEST(WhitespaceFilter, AmpersandLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2761,8 +3684,12 @@ TEST(WhitespaceFilter, PipeLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2777,8 +3704,12 @@ TEST(WhitespaceFilter, HighBitLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2793,8 +3724,12 @@ TEST(WhitespaceFilter, EOFLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2809,8 +3744,12 @@ TEST(WhitespaceFilter, UnknownLineComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2825,8 +3764,12 @@ TEST(WhitespaceFilter, WhitespaceBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2841,8 +3784,12 @@ TEST(WhitespaceFilter, LineEndBlockComment)
 
     //read a newline (end of second line)
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2857,8 +3804,12 @@ TEST(WhitespaceFilter, FSlashBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2873,8 +3824,12 @@ TEST(WhitespaceFilter, BackslashBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2889,8 +3844,12 @@ TEST(WhitespaceFilter, StarBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2905,8 +3864,12 @@ TEST(WhitespaceFilter, BangBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2921,8 +3884,12 @@ TEST(WhitespaceFilter, DoubleQuoteBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2937,8 +3904,12 @@ TEST(WhitespaceFilter, ExpBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2953,8 +3924,12 @@ TEST(WhitespaceFilter, AlphaBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2969,8 +3944,12 @@ TEST(WhitespaceFilter, UnderscoreBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -2985,8 +3964,12 @@ TEST(WhitespaceFilter, HexXBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3001,8 +3984,12 @@ TEST(WhitespaceFilter, BinBBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3017,8 +4004,12 @@ TEST(WhitespaceFilter, BNumBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3033,8 +4024,12 @@ TEST(WhitespaceFilter, ONumBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3049,8 +4044,12 @@ TEST(WhitespaceFilter, DNumBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3065,8 +4064,12 @@ TEST(WhitespaceFilter, HNumBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3081,8 +4084,12 @@ TEST(WhitespaceFilter, DotBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3097,8 +4104,12 @@ TEST(WhitespaceFilter, PlusBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3113,8 +4124,12 @@ TEST(WhitespaceFilter, MinusBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3129,8 +4144,12 @@ TEST(WhitespaceFilter, OParenBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3145,8 +4164,12 @@ TEST(WhitespaceFilter, CParenBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3161,8 +4184,12 @@ TEST(WhitespaceFilter, LtBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3177,8 +4204,12 @@ TEST(WhitespaceFilter, EqBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3193,8 +4224,12 @@ TEST(WhitespaceFilter, GtBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3209,8 +4244,12 @@ TEST(WhitespaceFilter, CommaBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3225,8 +4264,12 @@ TEST(WhitespaceFilter, HashBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3241,8 +4284,12 @@ TEST(WhitespaceFilter, AmpersandBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3257,8 +4304,12 @@ TEST(WhitespaceFilter, PipeBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3273,8 +4324,12 @@ TEST(WhitespaceFilter, HighBitBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3289,8 +4344,12 @@ TEST(WhitespaceFilter, EOFBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3305,8 +4364,12 @@ TEST(WhitespaceFilter, UnknownBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3321,8 +4384,12 @@ TEST(WhitespaceFilter, WhitespaceMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3337,8 +4404,12 @@ TEST(WhitespaceFilter, LineEndMaybeEndBlockComment)
 
     //read a newline (end of second line)
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3355,14 +4426,24 @@ TEST(WhitespaceFilter, FSlashMaybeEndBlockComment)
 
     //read a space which replaces the block comment
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(4, filt->columnNumber());
     //read a star
     EXPECT_EQ('*', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(5, filt->columnNumber());
     //read a slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(6, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3377,8 +4458,12 @@ TEST(WhitespaceFilter, BackslashMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3393,8 +4478,12 @@ TEST(WhitespaceFilter, StarMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3409,8 +4498,12 @@ TEST(WhitespaceFilter, BangMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3425,8 +4518,12 @@ TEST(WhitespaceFilter, DoubleQuoteMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3441,8 +4538,12 @@ TEST(WhitespaceFilter, ExpMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3457,8 +4558,12 @@ TEST(WhitespaceFilter, AlphaMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3473,8 +4578,12 @@ TEST(WhitespaceFilter, UnderscoreMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3489,8 +4598,12 @@ TEST(WhitespaceFilter, HexXMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3505,8 +4618,12 @@ TEST(WhitespaceFilter, BinBMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3521,8 +4638,12 @@ TEST(WhitespaceFilter, BNumMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3537,8 +4658,12 @@ TEST(WhitespaceFilter, ONumMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3553,8 +4678,12 @@ TEST(WhitespaceFilter, DNumMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3569,8 +4698,12 @@ TEST(WhitespaceFilter, HNumMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3585,8 +4718,12 @@ TEST(WhitespaceFilter, DotMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3601,8 +4738,12 @@ TEST(WhitespaceFilter, PlusMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3617,8 +4758,12 @@ TEST(WhitespaceFilter, MinusMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3633,8 +4778,12 @@ TEST(WhitespaceFilter, OParenMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3649,8 +4798,12 @@ TEST(WhitespaceFilter, CParenMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3665,8 +4818,12 @@ TEST(WhitespaceFilter, LtMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3681,8 +4838,12 @@ TEST(WhitespaceFilter, EqMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3697,8 +4858,12 @@ TEST(WhitespaceFilter, GtMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3713,8 +4878,12 @@ TEST(WhitespaceFilter, CommaMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3729,8 +4898,12 @@ TEST(WhitespaceFilter, HashMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3745,8 +4918,12 @@ TEST(WhitespaceFilter, AmpersandMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3761,8 +4938,12 @@ TEST(WhitespaceFilter, PipeMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3777,8 +4958,12 @@ TEST(WhitespaceFilter, HighBitMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3793,8 +4978,12 @@ TEST(WhitespaceFilter, EOFMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3809,8 +4998,12 @@ TEST(WhitespaceFilter, UnknownMaybeEndBlockComment)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3825,10 +5018,16 @@ TEST(WhitespaceFilter, WhitespaceMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3844,8 +5043,12 @@ TEST(WhitespaceFilter, LineEndMaybeEscapeNewline)
 
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(3, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3861,12 +5064,20 @@ TEST(WhitespaceFilter, FSlashMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a forward slash
     EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3881,12 +5092,20 @@ TEST(WhitespaceFilter, BackslashMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3901,12 +5120,20 @@ TEST(WhitespaceFilter, StarMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a star
     EXPECT_EQ('*', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3921,12 +5148,20 @@ TEST(WhitespaceFilter, BangMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a bang
     EXPECT_EQ('!', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3941,12 +5176,20 @@ TEST(WhitespaceFilter, DoubleQuoteMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a double quote
     EXPECT_EQ('\"', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3961,12 +5204,20 @@ TEST(WhitespaceFilter, ExpMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an exp
     EXPECT_EQ('e', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -3981,12 +5232,20 @@ TEST(WhitespaceFilter, AlphaMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an alpha
     EXPECT_EQ('g', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4001,12 +5260,20 @@ TEST(WhitespaceFilter, UnderscoreMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an underscore
     EXPECT_EQ('_', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4021,12 +5288,20 @@ TEST(WhitespaceFilter, HexXMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a HexX
     EXPECT_EQ('x', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4041,12 +5316,20 @@ TEST(WhitespaceFilter, BinBMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BinB
     EXPECT_EQ('b', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4061,12 +5344,20 @@ TEST(WhitespaceFilter, BNumMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a BNum
     EXPECT_EQ('1', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4081,12 +5372,20 @@ TEST(WhitespaceFilter, ONumMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an ONum
     EXPECT_EQ('7', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4101,12 +5400,20 @@ TEST(WhitespaceFilter, DNumMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a DNum
     EXPECT_EQ('9', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4121,12 +5428,20 @@ TEST(WhitespaceFilter, HNumMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read an HNum
     EXPECT_EQ('C', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4141,12 +5456,20 @@ TEST(WhitespaceFilter, DotMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a Dot
     EXPECT_EQ('.', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4161,12 +5484,20 @@ TEST(WhitespaceFilter, PlusMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Plus
     EXPECT_EQ('+', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4181,12 +5512,20 @@ TEST(WhitespaceFilter, MinusMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Minus
     EXPECT_EQ('-', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4201,12 +5540,20 @@ TEST(WhitespaceFilter, OParenMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read OParen
     EXPECT_EQ('(', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4221,12 +5568,20 @@ TEST(WhitespaceFilter, CParenMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read CParen
     EXPECT_EQ(')', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4241,12 +5596,20 @@ TEST(WhitespaceFilter, LtMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Lt
     EXPECT_EQ('<', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4261,12 +5624,20 @@ TEST(WhitespaceFilter, EqMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Eq
     EXPECT_EQ('=', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4281,12 +5652,20 @@ TEST(WhitespaceFilter, GtMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Gt
     EXPECT_EQ('>', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4301,12 +5680,20 @@ TEST(WhitespaceFilter, CommaMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read comma
     EXPECT_EQ(',', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4321,12 +5708,20 @@ TEST(WhitespaceFilter, HashMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Hash
     EXPECT_EQ('#', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4341,12 +5736,20 @@ TEST(WhitespaceFilter, AmpersandMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Ampersand
     EXPECT_EQ('&', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4361,12 +5764,20 @@ TEST(WhitespaceFilter, PipeMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Pipe
     EXPECT_EQ('|', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4381,12 +5792,20 @@ TEST(WhitespaceFilter, HighBitMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read HighBit
     EXPECT_EQ((int)((uint8_t)'\x82'), filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4401,10 +5820,16 @@ TEST(WhitespaceFilter, EOFMaybeEscapeNewline)
 
     //read a backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }
 
 /**
@@ -4419,10 +5844,18 @@ TEST(WhitespaceFilter, UnknownMaybeEscapeNewline)
 
     //read backslash
     EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read Unknown
     EXPECT_EQ(']', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
     //read a newline
     EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
 }

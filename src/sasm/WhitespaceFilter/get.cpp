@@ -592,7 +592,7 @@ computeCachedCharLineCol(WhitespaceFilterImplementation* impl, int ch)
         ++impl->line;
         impl->column = 0;
     }
-    else if (impl->cachedChar != EOF)
+    else if (impl->cachedChar != EOF && !impl->isEof)
     {
         ++impl->column;
     }
@@ -604,8 +604,11 @@ computeCachedCharLineCol(WhitespaceFilterImplementation* impl, int ch)
 static void
 cacheCharLineCol(WhitespaceFilterImplementation* impl, int ch)
 {
-    impl->column = impl->in_.columnNumber();
-    impl->line   = impl->in_.lineNumber();
+    if (!impl->isEof)
+    {
+        impl->column = impl->in_.columnNumber();
+        impl->line   = impl->in_.lineNumber();
+    }
 }
 
 /**
@@ -805,8 +808,11 @@ static bool dropCharacter(WhitespaceFilterImplementation*, int*)
  */
 static bool passCharacter(WhitespaceFilterImplementation* impl, int*)
 {
-    impl->line   = impl->in_.lineNumber();
-    impl->column = impl->in_.columnNumber();
+    if (!impl->isEof)
+    {
+        impl->line   = impl->in_.lineNumber();
+        impl->column = impl->in_.columnNumber();
+    }
 
     return false;
 }
@@ -818,6 +824,10 @@ static bool passCharacterToInit(WhitespaceFilterImplementation* impl, int* ch)
 {
     impl->inputState =
         whitespaceFilterState2index(WhitespaceFilterState::Init);
+
+    //adjust line / column
+    impl->line   = impl->in_.lineNumber();
+    impl->column = impl->in_.columnNumber();
 
     return false;
 }
@@ -833,6 +843,10 @@ static bool passSpaceToEndOfFile(
     impl->haveCachedChar = true;
     impl->isEof = true;
     *ch = '\n';
+
+    //adjust line / column
+    ++impl->line;
+    impl->column = 0;
 
     impl->inputState =
         whitespaceFilterState2index(WhitespaceFilterState::EndOfFile);
