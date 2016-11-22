@@ -582,6 +582,33 @@ static bool filter(WhitespaceFilterImplementation* impl, int* ch)
 }
 
 /**
+ * Compute the line/column for a cached character.
+ */
+static void
+computeCachedCharLineCol(WhitespaceFilterImplementation* impl, int ch)
+{
+    if (impl->cachedChar == '\n')
+    {
+        ++impl->line;
+        impl->column = 0;
+    }
+    else if (impl->cachedChar != EOF)
+    {
+        ++impl->column;
+    }
+}
+
+/**
+ * Cache the previous line / column information.
+ */
+static void
+cacheCharLineCol(WhitespaceFilterImplementation* impl, int ch)
+{
+    impl->column = impl->in_.columnNumber();
+    impl->line   = impl->in_.lineNumber();
+}
+
+/**
  * The get method works like istream::get(), except that white space
  * characters and comments are condensed to a single space.
  *
@@ -597,10 +624,16 @@ int WhitespaceFilter::get()
         {
             impl_->haveCachedChar = false;
 
+            computeCachedCharLineCol(impl_.get(), ch);
+
             return impl_->cachedChar;
         }
         else
         {
+            //save the previous line / column information
+            cacheCharLineCol(impl_.get(), ch);
+
+            //get the next character
             ch = impl_->in_.get();
         }
     } while (filter(impl_.get(), &ch));
@@ -665,6 +698,10 @@ static bool actionMaybeLineEnd(WhitespaceFilterImplementation* impl, int* ch)
 
     impl->inputState =
         whitespaceFilterState2index(WhitespaceFilterState::EndOfFile);
+
+    //update line / column
+    impl->line++;
+    impl->column = 0;
 
     return false;
 }
@@ -766,8 +803,11 @@ static bool dropCharacter(WhitespaceFilterImplementation*, int*)
 /**
  * Return the current character to the caller.
  */
-static bool passCharacter(WhitespaceFilterImplementation*, int*)
+static bool passCharacter(WhitespaceFilterImplementation* impl, int*)
 {
+    impl->line   = impl->in_.lineNumber();
+    impl->column = impl->in_.columnNumber();
+
     return false;
 }
 
@@ -811,6 +851,10 @@ static bool passSpaceToInit(WhitespaceFilterImplementation* impl, int* ch)
         whitespaceFilterState2index(WhitespaceFilterState::Init);
     *ch = ' ';
 
+    //fix up line / column
+    impl->line   = impl->in_.lineNumber();
+    impl->column = impl->in_.columnNumber()-1;
+
     return false;
 }
 
@@ -823,6 +867,7 @@ static bool passSlashToEndOfFile(
     impl->haveCachedChar = true;
     impl->cachedChar = '\n';
     *ch = '/';
+    impl->isEof = true;
 
     impl->inputState =
         whitespaceFilterState2index(WhitespaceFilterState::EndOfFile);

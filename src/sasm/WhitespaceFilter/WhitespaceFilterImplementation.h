@@ -29,7 +29,7 @@ struct WhitespaceFilterImplementation
 {
     WhitespaceFilterImplementation(std::istream& in)
         : in_(in), haveCachedChar(false), cachedChar(-1), inputState(0),
-          isEof(false)
+          line(1), column(0), isEof(false)
     {
     }
 
@@ -37,6 +37,8 @@ struct WhitespaceFilterImplementation
     bool haveCachedChar;
     int cachedChar;
     int inputState;
+    int line;
+    int column;
     bool isEof;
 };
 

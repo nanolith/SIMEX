@@ -176,8 +176,12 @@ TEST(WhitespaceFilter, blockCommentColumn)
 
     //read the X
     EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read a space
     EXPECT_EQ(' ', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(8, filt->columnNumber());
     //read the Y
     EXPECT_EQ('Y', filt->get());
     //the Y should be at line 1 column 9
@@ -187,6 +191,87 @@ TEST(WhitespaceFilter, blockCommentColumn)
     EXPECT_EQ('\n', filt->get());
     //read EOF
     EXPECT_EQ(EOF, filt->get());
+}
+
+/**
+ * Test that the column is properly updated for a slash.
+ */
+TEST(WhitespaceFilter, slashColumn)
+{
+    stringstream in("X/Y");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the X
+    EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
+    //read a slash
+    EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
+    //read the Y
+    EXPECT_EQ('Y', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(3, filt->columnNumber());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+    //read EOF
+    EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+}
+
+/**
+ * Test that the column is properly updated for a backslash.
+ */
+TEST(WhitespaceFilter, backslashColumn)
+{
+    stringstream in("X\\Y");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the X
+    EXPECT_EQ('X', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
+    //read a backslash
+    EXPECT_EQ('\\', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(2, filt->columnNumber());
+    //read the Y
+    EXPECT_EQ('Y', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(3, filt->columnNumber());
+    //read a newline
+    EXPECT_EQ('\n', filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+    //read EOF
+    EXPECT_EQ(EOF, filt->get());
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(0, filt->columnNumber());
+}
+
+/**
+ * Test that the column number is correctly returned for a forward-slash /
+ * newline combination.
+ */
+TEST(WhitespaceFilter, forwardSlashNLColumn)
+{
+    stringstream in("/\n");
+
+    //create the whitespace filter
+    auto filt = make_shared<WhitespaceFilter>(in);
+
+    //read the slash
+    EXPECT_EQ('/', filt->get());
+    EXPECT_EQ(1, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
 }
 
 /**
@@ -244,8 +329,9 @@ TEST(WhitespaceFilter, NLslashEOF)
     EXPECT_EQ('\n', filt->get());
     //read the slash
     EXPECT_EQ('/', filt->get());
-    //We should be on line 2
-    ASSERT_EQ(2, filt->lineNumber());
+    //We should be on line 2, column 1
+    EXPECT_EQ(2, filt->lineNumber());
+    EXPECT_EQ(1, filt->columnNumber());
     //read the newline
     EXPECT_EQ('\n', filt->get());
     //read the EOF
@@ -365,7 +451,7 @@ TEST(WhitespaceFilter, blockCommentLinesElided)
     //read the EOF
     EXPECT_EQ(EOF, filt->get());
     //the line count should be updated, however
-    EXPECT_EQ(6, filt->lineNumber());
+    EXPECT_EQ(5, filt->lineNumber());
 }
 
 /**

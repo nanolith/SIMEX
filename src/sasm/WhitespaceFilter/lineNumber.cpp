@@ -21,10 +21,5 @@ using namespace std;
  */
 int WhitespaceFilter::lineNumber()
 {
-    int lineNo = impl_->in_.lineNumber();
-
-    if (impl_->isEof)
-        ++lineNo;
-
-    return lineNo;
+    return impl_->line;
 }

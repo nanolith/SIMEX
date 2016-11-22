@@ -21,8 +21,5 @@ using namespace std;
  */
 int WhitespaceFilter::columnNumber()
 {
-    if (impl_->isEof)
-        return 0;
-
-    return impl_->in_.columnNumber();
+    return impl_->column;
 }
