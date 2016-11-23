@@ -396,6 +396,21 @@ public:
      */
     int tokenStartLineNumber();
 
+    /**
+     * Returns the column number where the token started.
+     */
+    int tokenStartColumnNumber();
+
+    /**
+     * Returns the line number where the token ended.
+     */
+    int tokenEndLineNumber();
+
+    /**
+     * Returns the column number where the token ended.
+     */
+    int tokenEndColumnNumber();
+
 private:
     std::unique_ptr<PreprocessorLexerImplementation> impl_;
 };
