@@ -23,18 +23,47 @@
 namespace simex { namespace sasm {
 
 /**
+ * Preprocessor Lexer states.
+ */
+enum class PreprocessorLexerState
+{
+    Init            = 0,
+    Identifier,
+};
+
+/**
+ * Preprocessor Lexer state to index.
+ */
+inline int preprocessorLexerState2index(PreprocessorLexerState st)
+{
+    return static_cast<std::underlying_type<PreprocessorLexerState>::type>(st);
+}
+
+/**
  * Private implementation details for PreprocessorLexer.
  */
 struct PreprocessorLexerImplementation
 {
     PreprocessorLexerImplementation(std::istream& in)
-        : filt_(in), inputState(0)
+        : filt_(in), haveCachedChar(false), cachedChar(0), inputState(0),
+          line(1), column(0), isEof(false)
     {
     }
 
     WhitespaceFilter filt_;
+    bool haveCachedChar;
+    int cachedChar;
     int inputState;
+    int line;
+    int column;
+    bool isEof;
 };
+
+/**
+ * Function type for preprocessor actions in the preprocessor state machine.
+ */
+typedef bool (*preprocessor_method_t)(PreprocessorLexerImplementation*, int,
+                                      PTok*);
 
 /* namespace sasm */ } /* namespace simex */ }
 
